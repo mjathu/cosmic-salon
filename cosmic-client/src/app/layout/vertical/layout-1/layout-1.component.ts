@@ -4,12 +4,16 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { navigation } from 'app/navigation/navigation';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector     : 'vertical-layout-1',
     templateUrl  : './layout-1.component.html',
     styleUrls    : ['./layout-1.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    animations: [
+        fuseAnimations
+    ]
 })
 export class VerticalLayout1Component implements OnInit, OnDestroy
 {

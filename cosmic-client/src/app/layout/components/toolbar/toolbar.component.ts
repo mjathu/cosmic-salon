@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { pipe, Subject } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
 
@@ -8,12 +8,20 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { navigation } from 'app/navigation/navigation';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthUser } from 'app/shared/interface/auth-user.interface';
+import { AuthService } from 'app/shared/services/auth.service';
+import { NotificationService } from 'app/shared/services/notification-service';
+import { NotificationType } from 'app/shared/enum/notification-type.enum';
 
 @Component({
     selector     : 'toolbar',
     templateUrl  : './toolbar.component.html',
     styleUrls    : ['./toolbar.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    animations: [
+        fuseAnimations
+    ]
 })
 
 export class ToolbarComponent implements OnInit, OnDestroy
@@ -25,6 +33,8 @@ export class ToolbarComponent implements OnInit, OnDestroy
     navigation: any;
     selectedLanguage: any;
     userStatusOptions: any[];
+    authUser: AuthUser;
+    loading: boolean;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -39,7 +49,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
-        private _translateService: TranslateService
+        private _translateService: TranslateService,
+        private _authService: AuthService,
+        private _notificationService: NotificationService
     )
     {
         // Set the defaults
@@ -88,6 +100,9 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+
+        this.authUser = null;
+        this.loading = false;
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -110,6 +125,14 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         // Set the selected language from default languages
         this.selectedLanguage = _.find(this.languages, {id: this._translateService.currentLang});
+
+        this._authService.currentUser
+            .pipe(
+                takeUntil(this._unsubscribeAll)
+            )
+            .subscribe((user: AuthUser) => {
+                this.authUser = user || null;
+            });
     }
 
     /**
@@ -159,5 +182,24 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         // Use the selected language for translations
         this._translateService.use(lang.id);
+    }
+
+    logout(event: MouseEvent): void {
+
+        event.preventDefault();
+
+        this.loading = true;
+
+        this._authService.logout()
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                finalize(() => {
+                    this.loading = false;
+                })
+            )
+            .subscribe((message: string) => {
+                this._notificationService.displayNotification(message, NotificationType.SUCCESS, null, {timeOut: 1500});
+            });
+
     }
 }

@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'cosmic-api/*'],
 
     'allowed_methods' => ['*'],
 
@@ -23,12 +23,34 @@ return [
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => [
+        'Accept',
+        'Authorization',
+        'Cookie',
+        'DNT',
+        'Origin',
+        'User-Agent',
+        'X-Requested-With',
+        'Refresh-Token',
+        'Auth-Client',
+        'Content-Type',
+        'Content-Length',
+        'Content-Language',
+        'Client',
+        'Client-Ref'
+    ],
 
-    'exposed_headers' => [],
+    'exposed_headers' => [
+        'Accept',
+        'Authorization',
+        'Origin',
+        'Content-Type',
+        'X-Requested-With',
+        'Refresh-Token'
+    ],
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];

@@ -1,10 +1,14 @@
 import { Component, ElementRef, Input, Renderer2, ViewEncapsulation } from '@angular/core';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector     : 'navbar',
     templateUrl  : './navbar.component.html',
     styleUrls    : ['./navbar.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    animations: [
+        fuseAnimations
+    ]
 })
 export class NavbarComponent
 {

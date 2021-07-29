@@ -1,12 +1,13 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastrModule } from 'ngx-toastr';
 
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
@@ -17,11 +18,20 @@ import { fuseConfig } from 'app/fuse-config';
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { SampleModule } from 'app/main/sample/sample.module';
+import { AuthModule } from './main/auth/auth.module';
+import { HttpErrorInterceptor } from './shared/interceptors/http-error.interceptor';
+import { AppErrorHandler } from './shared/error/error-handler';
+import { HttpAuthInterceptor } from './shared/interceptors/http-auth.interceptor';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const appRoutes: Routes = [
     {
+        path: 'welcome',
+        loadChildren: () => import('./main/modules/welcome/welcome.module').then((m) => m.WelcomeModule)
+    },
+    {
         path      : '**',
-        redirectTo: 'sample'
+        redirectTo: 'welcome'
     }
 ];
 
@@ -34,6 +44,7 @@ const appRoutes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
+        ReactiveFormsModule,
 
         TranslateModule.forRoot(),
 
@@ -51,13 +62,38 @@ const appRoutes: Routes = [
         FuseSidebarModule,
         FuseThemeOptionsModule,
 
+        ToastrModule.forRoot({
+            timeOut: 5000,
+            positionClass: 'toast-top-center',
+            preventDuplicates: true,
+            progressBar: true,
+            progressAnimation: 'decreasing'
+        }),
+
         // App modules
         LayoutModule,
-        SampleModule
+        SampleModule,
+        AuthModule
     ],
     bootstrap   : [
         AppComponent
-    ]
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpErrorInterceptor,
+            multi: true
+        },
+        {
+            provide: ErrorHandler, 
+            useClass: AppErrorHandler
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpAuthInterceptor,
+            multi: true
+        },
+    ],
 })
 export class AppModule
 {

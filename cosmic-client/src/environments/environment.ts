@@ -4,7 +4,8 @@
 
 export const environment = {
     production: false,
-    hmr       : false
+    hmr: false,
+    apiUrl: '//127.0.0.1:8000/api'
 };
 
 /*
