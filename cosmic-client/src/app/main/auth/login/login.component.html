@@ -1,0 +1,64 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+
+    <div id="login-container" class="p-24" fxFill fxLayout="row" fxLayoutAlign="center center">
+
+        <mat-card class="p-36" [@animate]="{ value:'*', params:{ delay: '200ms', y:'-35px' } }">
+
+            <form [formGroup]="loginForm" fxLayout="column">
+
+                <div class="logo text-center">
+                    <img src="assets/images/logos/logo.jpg" alt="logo">
+                </div>
+
+                <h2 class="text-center h2">Welcome to Cosmic Salon</h2>
+                <h3 class="text-center h3">Please login to use our services</h3>
+
+                <mat-form-field appearance="outline">
+
+                    <mat-label>Email</mat-label>
+
+                    <input type="email" formControlName="email" matInput>
+
+                    <mat-error *ngIf="loginForm.get('email').hasError('email') && !loginForm.get('email').hasError('required')">
+                        Please enter a valid email address
+                    </mat-error>
+
+                    <mat-error *ngIf="loginForm.get('email').hasError('required')">
+                        Email is required
+                    </mat-error>
+
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+
+                    <mat-label>Password</mat-label>
+
+                    <input type="password" formControlName="password" matInput>
+
+                    <mat-error *ngIf="loginForm.get('password').hasError('required')">
+                        Password is required
+                    </mat-error>
+
+                </mat-form-field>
+
+                <p class="text-center">Don't have an account? <a href="#" routerLink="/register">Sign Up</a></p>
+
+                <p class="text-center pb-20">Don't know your password? <a href="#" routerLink="/forgot-password">Forgot Password</a></p>
+
+                <button 
+                    mat-raised-button 
+                    color="primary" 
+                    [disabled]="loginForm.invalid" 
+                    type="button"
+                    [loading]="loading"
+                    (click)="submit($event)">
+                    Login
+                </button>
+
+            </form>
+
+        </mat-card>
+
+    </div>
+
+</div>

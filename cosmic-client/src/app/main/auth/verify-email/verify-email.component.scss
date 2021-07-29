@@ -1,0 +1,18 @@
+:host {
+
+    #verify-email-container {
+
+        mat-card {            
+            width: 400px;
+            border-radius: 12px;
+
+            .logo {
+                img {
+                    width: 260px;
+                }
+            }
+        }
+
+    }
+
+}
