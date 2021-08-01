@@ -12,19 +12,18 @@ import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
-  declarations: [MatButtonLoadingDirective],
-  imports: [
-    CommonModule,
-    BrowserModule, 
-    FormsModule, 
-    MatButtonModule, 
-    MatDividerModule, 
-    MatIconModule, 
-    MatSlideToggleModule, 
-    MatProgressSpinnerModule 
-  ],
-  exports: [
-      MatButtonLoadingDirective
-  ]
+    declarations: [MatButtonLoadingDirective],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatButtonModule,
+        MatDividerModule,
+        MatIconModule,
+        MatSlideToggleModule,
+        MatProgressSpinnerModule
+    ],
+    exports: [
+        MatButtonLoadingDirective
+    ]
 })
 export class SharedModule { }

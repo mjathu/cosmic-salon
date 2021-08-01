@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RoleType;
 use App\Notifications\ResetPasswordNotification;
 use Helpers;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -84,5 +85,20 @@ class User extends Authenticatable
     public function scopeActive($query)
     {
         return $query->where('active', true);
+    }
+
+    public function scopeAdmin($query)
+    {
+        return $query->where('role', RoleType::ADMIN);
+    }
+
+    public function scopeStaff($query)
+    {
+        return $query->where('role', RoleType::STAFF);
+    }
+
+    public function scopeClient($query)
+    {
+        return $query->where('role', RoleType::CLIENT);
     }
 }

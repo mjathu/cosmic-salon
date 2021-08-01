@@ -14,6 +14,8 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { navigation } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
+import { AuthService } from './shared/services/auth.service';
+import { CommonService } from './shared/services/common-service.service';
 
 @Component({
     selector   : 'app',
@@ -48,17 +50,19 @@ export class AppComponent implements OnInit, OnDestroy
         private _fuseSplashScreenService: FuseSplashScreenService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
-        private _platform: Platform
+        private _platform: Platform,
+        private _authService: AuthService,
+        private _commonService: CommonService
     )
     {
         // Get default navigation
-        this.navigation = navigation;
+        // this.navigation = navigation;
 
         // Register the navigation to the service
-        this._fuseNavigationService.register('main', this.navigation);
+        // this._fuseNavigationService.register('main', this.navigation);
 
         // Set the main navigation as our current navigation
-        this._fuseNavigationService.setCurrentNavigation('main');
+        // this._fuseNavigationService.setCurrentNavigation('main');
 
         // Add languages
         this._translateService.addLangs(['en', 'tr']);
@@ -154,6 +158,15 @@ export class AppComponent implements OnInit, OnDestroy
 
                 this.document.body.classList.add(this.fuseConfig.colorTheme);
             });
+
+            this._authService.onAuthChange
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((auth: boolean) => {
+
+                    this._commonService.setNavigation();
+                    
+                });
+
     }
 
     /**

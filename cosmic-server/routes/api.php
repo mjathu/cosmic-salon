@@ -24,6 +24,9 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 //---------- Authenticated Routes --------------//
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
+    // Profile Routes
+    Route::post('/update-profile', [CommonController::class, 'updateProfile']);
+    Route::post('/change-password', [AuthController::class, 'changePassword']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 

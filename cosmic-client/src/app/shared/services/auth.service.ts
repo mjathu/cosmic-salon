@@ -6,6 +6,7 @@ import { finalize, map, shareReplay, tap } from 'rxjs/operators';
 import { Const } from '../Const';
 import { AuthUser } from '../interface/auth-user.interface';
 import { ApiCommonResponse } from '../interface/http-common-response.interface';
+import { User } from '../interface/user.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -69,8 +70,8 @@ export class AuthService {
     loginSteps(user: AuthUser): void {
         this.setCurrentUserLocalStorage(user);
         this._isAuthenticated = true;
-        this.onAuthChange.next(true);
         this._currentUserSubject.next(user);
+        this.onAuthChange.next(true);
 
         this.redirectDefaultAuthenticatedRoute();
     }
@@ -95,8 +96,8 @@ export class AuthService {
     logoutSteps(): void {
         this.removeCurrentUserLocalStorage();
         this._isAuthenticated = false;
-        this.onAuthChange.next(false);
         this._currentUserSubject.next(null);
+        this.onAuthChange.next(false);
 
         this.redirectDefaultNonAuthenticatedRoute();
     }
@@ -130,7 +131,7 @@ export class AuthService {
     }
 
     redirectDefaultAuthenticatedRoute(): void {
-        this._router.navigate(['/welcome']);
+        this._router.navigate(['/home']);
     }
 
     register(registerData: any): Observable<any> {
@@ -154,6 +155,37 @@ export class AuthService {
                 }),
                 shareReplay()
             );
+
+    }
+
+    updateAuthUserProfile(user: AuthUser | User): void {
+        
+        if (this.currentUserValue.id === user.id) {
+
+            const updatedObj = {...this.currentUserValue, ...user};
+
+            this.removeCurrentUserLocalStorage();
+            this.setCurrentUserLocalStorage(updatedObj);
+            this._currentUserSubject.next(updatedObj);
+
+        }
+
+    }
+
+    changePassword(data: any): Observable<any> {
+
+        return this._httpClient.post(`${Const.apiBaseUrl}/change-password`, data)
+        .pipe(
+            tap((response: ApiCommonResponse) => {
+                
+                this.updateAuthUserProfile(response.data);
+
+            }),
+            map((response: ApiCommonResponse) => {
+                return response.message;
+            }), 
+            shareReplay()
+        );
 
     }
 }

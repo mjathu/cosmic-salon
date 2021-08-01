@@ -1,74 +1,49 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { FuseConfigService } from '@fuse/services/config.service';
 import { NotificationType } from 'app/shared/enum/notification-type.enum';
+import { ApiCommonResponse } from 'app/shared/interface/http-common-response.interface';
 import { AuthService } from 'app/shared/services/auth.service';
 import { NotificationService } from 'app/shared/services/notification-service';
+import { UserService } from 'app/shared/services/user.service';
 import { passwordMatchValidator } from 'app/shared/validators/password-match-validator';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-password-reset',
-    templateUrl: './password-reset.component.html',
-    styleUrls: ['./password-reset.component.scss'],
+    selector: 'app-change-password-dialog',
+    templateUrl: './change-password-dialog.component.html',
+    styleUrls: ['./change-password-dialog.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     animations: [
         fuseAnimations
     ]
 })
-export class PasswordResetComponent implements OnInit, OnDestroy {
+export class ChangePasswordDialogComponent implements OnInit, OnDestroy {
 
     private _unsubscribeAll: Subject<any>;
-
-    resetPasswordForm: FormGroup;
+    passwordForm: FormGroup;
     loading: boolean;
-    token: string;
-    email: string;
 
     constructor(
-        private _fuseConfigService: FuseConfigService,
+        public matDialogRef: MatDialogRef<ChangePasswordDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) private _data: any,
         private _formBuilder: FormBuilder,
+        private _userService: UserService,
         private _authService: AuthService,
-        private _route: ActivatedRoute,
-        private _router: Router,
         private _notificationService: NotificationService
-    ) { 
+    ) {
 
-        this._fuseConfigService.config = {
-            layout: {
-                navbar   : {
-                    hidden: true
-                },
-                footer   : {
-                    hidden: true
-                },
-                sidepanel: {
-                    hidden: true
-                },
-                toolbar: {
-                    hidden: true
-                }
-            }
-        };
-
-        
         this._unsubscribeAll = new Subject();
+
         this.loading = false;
-        
-        this.token = this._route.snapshot.queryParamMap.get('token');
-        this.email = this._route.snapshot.queryParamMap.get('email');
-        
         this.createForm();
+
+
     }
 
-    //------------------------ Life Cycle ----------------------//
-
     ngOnInit(): void {
-
-        
-
     }
 
     ngOnDestroy(): void {
@@ -80,32 +55,27 @@ export class PasswordResetComponent implements OnInit, OnDestroy {
 
     createForm(): void {
 
-        this.resetPasswordForm = this._formBuilder.group({
+        this.passwordForm = this._formBuilder.group({
+            current_password: new FormControl(null, [Validators.required]),
             password: new FormControl(null, [Validators.required]),
             confirm_password: new FormControl(null, [Validators.required, passwordMatchValidator]),
-            token: new FormControl(this.token, [Validators.required]),
-            email: new FormControl(this.email, [Validators.required])
         });
-    
-    }
 
-    get fc(): any {
-        return this.resetPasswordForm.controls;
     }
 
     submit(event: MouseEvent): void {
 
         event.preventDefault();
 
-        if (this.resetPasswordForm.invalid) {
+        if (this.passwordForm.invalid) {
             return;
         }
 
         this.loading = true;
 
-        const sendObj = this.resetPasswordForm.value;
+        const sendObj = this.passwordForm.value;
 
-        this._authService.resetPassword(sendObj)
+        this._authService.changePassword(sendObj)
             .pipe(
                 takeUntil(this._unsubscribeAll),
                 finalize(() => {
@@ -118,11 +88,10 @@ export class PasswordResetComponent implements OnInit, OnDestroy {
                 }
 
                 setTimeout(() => {
-                    this._authService.redirectDefaultNonAuthenticatedRoute();
-                }, 2000);
-                
+                    this.matDialogRef.close();
+                }, 500);
+
             });
 
     }
-
 }

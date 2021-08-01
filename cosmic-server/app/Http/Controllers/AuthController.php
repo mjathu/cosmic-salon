@@ -294,4 +294,56 @@ class AuthController extends Controller
 
     }
 
+    public function changePassword(Request $request)
+    {
+
+        DB::beginTransaction();
+
+        try {
+
+            $validated = $request->validate([
+                'current_password' => 'required',
+                'password' => 'required',
+                'confirm_password' => 'required'
+            ]);
+        
+            $user = $request->user();
+
+            if (! $user || ! Hash::check($request->input('current_password'), $user->password)) 
+            {
+                throw new Exception('Current password is incorrect', ErrorType::CustomError);
+            }
+
+            $user->password = Hash::make($request->input('password'));
+            $user->remember_token = Str::random(10);
+            $user->save();
+            
+            $user->tokens()->delete();
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            DB::commit();
+
+            return response()->json(ResponseHelper::buildJsonResponse(
+                ResponseCode::CODE_200,
+                'Password Change Success',
+                new UserResource($user, ['token' => $token])
+            ), ResponseCode::CODE_200);
+        
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            if($e instanceof ValidationException)
+            {
+                throw new ValidationException($e->validator);
+            }
+
+            throw new ApiException($e->getMessage(), $e->getCode(), $e);
+
+        }
+
+    }
+
 }

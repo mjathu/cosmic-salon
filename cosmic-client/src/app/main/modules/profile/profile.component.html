@@ -1,0 +1,30 @@
+<div id="profile" class="page-layout simple inner-scroll">
+
+    <div class="header primary-400 p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center" [@animate]="{value:'*',params:{delay:'100ms',y:'-25px'}}">
+                <mat-icon class="logo-icon mr-16">account_box
+                </mat-icon>
+                <span class="logo-text h1">
+                    Profile
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div fusePerfectScrollbar>
+
+        <div class="profile-content p-24" fxLayout="row wrap" fxLayoutAlign="center center">
+            
+            <app-user-details fxFlex.gt-md="960px" fxFlex="85%" [@animate]="{value:'*',params:{delay:'100ms',y:'-25px'}}"></app-user-details>
+    
+        </div>
+
+    </div>
+
+</div>

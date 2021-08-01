@@ -11,11 +11,11 @@
 
             <div class="toolbar-separator" *ngIf="!hiddenNavbar && !rightNavbar" fxHide.gt-md></div>
 
-            <div fxLayout="row" fxLayoutAlign="start center">
+            <!-- <div fxLayout="row" fxLayoutAlign="start center">
                 <div class="logo ml-16">
                     <img class="logo-icon" src="assets/images/logos/logo.jpg">
                 </div>
-            </div>
+            </div> -->
 
         </div>
 
@@ -36,7 +36,7 @@
 
             <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
 
-                <button mat-menu-item>
+                <button mat-menu-item routerLink="/profile">
                     <mat-icon>account_circle</mat-icon>
                     <span>My Profile</span>
                 </button>

@@ -1,0 +1,70 @@
+
+<mat-card class="w-100-p">
+
+
+    <mat-card-content>
+
+        <h2 class="h2 text-center">General Details</h2>
+
+        <form 
+            [formGroup]="profileForm" 
+            fxLayout="row wrap" 
+            fxLayoutGap="16px"
+            fxLayout.lt-sm="column"
+            fxLayoutAlign="flex-start">
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>First Name</mat-label>
+
+                <input type="text" formControlName="first_name" matInput required>
+
+                <mat-error *ngIf="profileForm.get('first_name').hasError('required')">
+                    First name is required
+                </mat-error>
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Last Name</mat-label>
+
+                <input type="text" formControlName="last_name" matInput required>
+
+                <mat-error *ngIf="profileForm.get('last_name').hasError('required')">
+                    Last name is required
+                </mat-error>
+
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Email</mat-label>
+
+                <input type="email" formControlName="email" matInput required>
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Phone</mat-label>
+
+                <input type="text" formControlName="phone" matInput required>
+
+                <mat-error *ngIf="profileForm.get('phone').hasError('required')">
+                    Phone number is required
+                </mat-error>
+
+            </mat-form-field>
+
+        </form>
+        
+    </mat-card-content>
+
+    <mat-card-actions [align]="'end'">
+        <button mat-raised-button color="primary" (click)="openChangePasswordDialog($event)">Change Password</button>
+        <button mat-raised-button color="accent" [disabled]="profileForm.invalid" (click)="submit($event)" [loading]="loading">Update</button>
+    </mat-card-actions>
+
+</mat-card>

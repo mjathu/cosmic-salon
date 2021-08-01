@@ -30,8 +30,16 @@ const appRoutes: Routes = [
         loadChildren: () => import('./main/modules/welcome/welcome.module').then((m) => m.WelcomeModule)
     },
     {
+        path: 'home',
+        loadChildren: () => import('./main/modules/home/home.module').then((m) => m.HomeModule)
+    },
+    {
+        path: 'profile',
+        loadChildren: () => import('./main/modules/profile/profile.module').then((m) => m.ProfileModule)
+    },
+    {
         path      : '**',
-        redirectTo: 'welcome'
+        redirectTo: 'home'
     }
 ];
 
