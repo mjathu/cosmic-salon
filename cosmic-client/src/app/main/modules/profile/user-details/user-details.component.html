@@ -17,9 +17,9 @@
 
                 <mat-label>First Name</mat-label>
 
-                <input type="text" formControlName="first_name" matInput required>
+                <input type="text" formControlName="firstName" matInput required>
 
-                <mat-error *ngIf="profileForm.get('first_name').hasError('required')">
+                <mat-error *ngIf="profileForm.get('firstName').hasError('required')">
                     First name is required
                 </mat-error>
 
@@ -29,9 +29,9 @@
 
                 <mat-label>Last Name</mat-label>
 
-                <input type="text" formControlName="last_name" matInput required>
+                <input type="text" formControlName="lastName" matInput required>
 
-                <mat-error *ngIf="profileForm.get('last_name').hasError('required')">
+                <mat-error *ngIf="profileForm.get('lastName').hasError('required')">
                     Last name is required
                 </mat-error>
 
@@ -64,7 +64,14 @@
 
     <mat-card-actions [align]="'end'">
         <button mat-raised-button color="primary" (click)="openChangePasswordDialog($event)">Change Password</button>
-        <button mat-raised-button color="accent" [disabled]="profileForm.invalid" (click)="submit($event)" [loading]="loading">Update</button>
+        <button 
+            mat-raised-button 
+            color="accent" 
+            [disabled]="profileForm.invalid || !formChanged()" 
+            (click)="submit($event)" 
+            [loading]="loading">
+            Update
+        </button>
     </mat-card-actions>
 
 </mat-card>

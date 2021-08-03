@@ -80,7 +80,7 @@ export class NewPasswordComponent implements OnInit, OnDestroy {
 
         this.staffAccountSetupForm = this._formBuilder.group({
             password: new FormControl(null, [Validators.required]),
-            confirm_password: new FormControl(null, [Validators.required, passwordMatchValidator]),
+            confirmPassword: new FormControl(null, [Validators.required, passwordMatchValidator]),
             id: new FormControl(this.id, [Validators.required])
         });
     

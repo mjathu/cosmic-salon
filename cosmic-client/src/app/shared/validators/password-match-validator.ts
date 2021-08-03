@@ -7,7 +7,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
     }
 
     const password = control.parent.get('password');
-    const passwordConfirm = control.parent.get('confirm_password');
+    const passwordConfirm = control.parent.get('confirmPassword');
 
     if (!password || !passwordConfirm) {
         return null;

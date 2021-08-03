@@ -109,8 +109,8 @@ class AuthController extends Controller
             $validated = $request->validate([
                 'email' => 'required',
                 'password' => 'required',
-                'first_name' => 'required',
-                'last_name' => 'required'
+                'firstName' => 'required',
+                'lastName' => 'required'
             ]);
         
             $existingUser = User::where('email', $request->input('email'))->first();
@@ -121,14 +121,14 @@ class AuthController extends Controller
             }
 
             $newUser = new User();
-            $newUser->first_name = $request->input('first_name');
-            $newUser->last_name = $request->input('last_name');
+            $newUser->first_name = $request->input('firstName');
+            $newUser->last_name = $request->input('lastName');
             $newUser->email = $request->input('email');
             $newUser->password = Hash::make($request->input('password'));
             $newUser->email_verified_at = null;
             $newUser->remember_token = Str::random(10);
             $newUser->active = false;
-            $newUser->role = RoleType::CLIENT;
+            $newUser->role = RoleType::CUSTOMER;
             $newUser->save();
 
             $url = Helpers::getUserEmailVerificationUrl($newUser);
@@ -256,12 +256,12 @@ class AuthController extends Controller
             $validated = $request->validate([
                 'token' => 'required',
                 'password' => 'required',
-                'confirm_password' => 'required',
+                'confirmPassword' => 'required',
                 'email' => 'required'
             ]);
 
             $status = Password::reset(
-                $request->only('email', 'password', 'confirm_password', 'token'),
+                $request->only('email', 'password', 'token'),
                 function ($user, $password) {
                     $user->forceFill([
                         'password' => Hash::make($password)
@@ -307,7 +307,7 @@ class AuthController extends Controller
             $validated = $request->validate([
                 'current_password' => 'required',
                 'password' => 'required',
-                'confirm_password' => 'required'
+                'confirmPassword' => 'required'
             ]);
         
             $user = $request->user();
@@ -359,7 +359,7 @@ class AuthController extends Controller
             $validated = $request->validate([
                 'id' => 'required',
                 'password' => 'required',
-                'confirm_password' => 'required'
+                'confirmPassword' => 'required'
             ]);
         
             $decId = Helpers::decodeId($request->input('id'));

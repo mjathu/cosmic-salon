@@ -44,6 +44,10 @@ const appRoutes: Routes = [
         loadChildren: () => import('./main/modules/staff/staff.module').then((m) => m.StaffModule)
     },
     {
+        path: 'customers',
+        loadChildren: () => import('./main/modules/customer/customer.module').then((m) => m.CustomerModule)
+    },
+    {
         path      : '**',
         redirectTo: 'home'
     }

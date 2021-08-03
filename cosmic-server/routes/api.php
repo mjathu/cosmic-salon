@@ -5,6 +5,7 @@ use App\Enums\ResponseCode;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommonController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\StaffController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 //---------- Open Routes --------------//
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register-client', [AuthController::class, 'registerClient']);
+Route::post('/register-customer', [AuthController::class, 'registerClient']);
 Route::get('/check-email-exists', [CommonController::class, 'checkExistingEmail']);
 Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
@@ -36,6 +37,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/staff-store', [StaffController::class, 'store']);
     Route::post('/staff-update', [StaffController::class, 'update']);
     Route::post('/staff-delete', [StaffController::class, 'delete']);
+
+    // Customer Routes
+    Route::get('/customer-list', [CustomerController::class, 'list']);
+    Route::post('/customer-update', [CustomerController::class, 'update']);
+    Route::post('/customer-delete', [CustomerController::class, 'delete']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 

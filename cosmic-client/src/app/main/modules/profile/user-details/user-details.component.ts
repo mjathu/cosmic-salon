@@ -65,13 +65,20 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 
         this.profileForm = this._formBuilder.group({
             email: new FormControl(this.user.email, [Validators.required, Validators.email]),
-            first_name: new FormControl(this.user.firstName, [Validators.required]),
-            last_name: new FormControl(this.user.lastName, [Validators.required]),
+            firstName: new FormControl(this.user.firstName, [Validators.required]),
+            lastName: new FormControl(this.user.lastName, [Validators.required]),
             phone: new FormControl(this.user.phone, [Validators.required]),
         });
 
         this.profileForm.get('email').disable();
 
+    }
+
+    formChanged(): boolean {
+        const formValue = this.profileForm.value;
+        const originalValue = _.pick(this.user, ['firstName', 'lastName', 'phone']);
+
+        return !_.isEqual(formValue, originalValue);
     }
 
     submit(event: MouseEvent): void {

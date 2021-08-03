@@ -55,14 +55,14 @@ class CommonController extends Controller
         try {
 
             $validated = $request->validate([
-                'first_name' => 'required',
-                'last_name' => 'required',
+                'firstName' => 'required',
+                'lastName' => 'required',
                 'phone' => 'required'
             ]);
 
             $user = $request->user();
-            $user->first_name = $request->input('first_name');
-            $user->last_name = $request->input('last_name');
+            $user->first_name = $request->input('firstName');
+            $user->last_name = $request->input('lastName');
             $user->phone = $request->input('phone');
             $user->save();
 

@@ -82,7 +82,7 @@ export class PasswordResetComponent implements OnInit, OnDestroy {
 
         this.resetPasswordForm = this._formBuilder.group({
             password: new FormControl(null, [Validators.required]),
-            confirm_password: new FormControl(null, [Validators.required, passwordMatchValidator]),
+            confirmPassword: new FormControl(null, [Validators.required, passwordMatchValidator]),
             token: new FormControl(this.token, [Validators.required]),
             email: new FormControl(this.email, [Validators.required])
         });

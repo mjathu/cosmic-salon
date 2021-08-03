@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->enum('role', [
                 'admin',
                 'staff',
-                'client'
+                'customer'
             ]);
             $table->boolean('active');
             

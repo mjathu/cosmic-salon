@@ -92,7 +92,7 @@ export class CommonService {
                     title    : 'Customers',
                     type     : 'item',
                     icon     : 'people',
-                    url      : '/clients'
+                    url      : '/customers'
                 }
             ];
 
@@ -108,7 +108,7 @@ export class CommonService {
                 }
             ];
 
-        } else if (authUser.role === UserLevel.CLIENT) {
+        } else if (authUser.role === UserLevel.CUSTOMER) {
 
             navItems = [
                 {

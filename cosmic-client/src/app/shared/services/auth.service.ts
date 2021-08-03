@@ -136,7 +136,7 @@ export class AuthService {
 
     register(registerData: any): Observable<any> {
 
-        return this._httpClient.post(`${Const.apiBaseUrl}/register-client`, registerData)
+        return this._httpClient.post(`${Const.apiBaseUrl}/register-customer`, registerData)
             .pipe(
                 map((response: ApiCommonResponse) => {
                     return response.message || null;

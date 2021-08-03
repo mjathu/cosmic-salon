@@ -97,8 +97,8 @@ class User extends Authenticatable
         return $query->where('role', RoleType::STAFF);
     }
 
-    public function scopeClient($query)
+    public function scopeCustomer($query)
     {
-        return $query->where('role', RoleType::CLIENT);
+        return $query->where('role', RoleType::CUSTOMER);
     }
 }

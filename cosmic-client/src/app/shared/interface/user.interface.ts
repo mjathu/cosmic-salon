@@ -1,3 +1,5 @@
+import { UserLevel } from "../enum/user-level.enum";
+
 export interface User {
     id: string;
     firstName: string;
@@ -7,7 +9,7 @@ export interface User {
     email: string;
     createdAt: string;
     updatedAt: string;
-    role: 'admin' | 'client' | 'staff';
+    role: UserLevel.ADMIN | UserLevel.STAFF | UserLevel.CUSTOMER;
     phone: string;
     emailVerifiedAt: string;
     rememberToken: string;

@@ -69,11 +69,11 @@ class UserFactory extends Factory
         });
     }
 
-    public function client()
+    public function customer()
     {
         return $this->state(function (array $attributes) {
             return [
-                'role' => 'client'
+                'role' => 'customer'
             ];
         });
     }

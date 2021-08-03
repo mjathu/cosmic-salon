@@ -4,7 +4,7 @@
 
         <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
 
-            <span class="title dialog-title"> {{ editMode ? 'Edit' : 'Add' }} Staff</span>
+            <span class="title dialog-title"> {{ editMode ? 'Edit' : 'Add' }} Customer</span>
 
             <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
@@ -17,8 +17,8 @@
     <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{ suppressScrollX: true }">
 
         <form 
-            name="staffForm" 
-            [formGroup]="staffForm" 
+            name="customerForm" 
+            [formGroup]="customerForm" 
             fxLayout="row wrap" 
             fxLayoutGap="16px"
             fxLayout.lt-sm="column"
@@ -30,7 +30,7 @@
 
                 <input type="text" formControlName="firstName" matInput required>
 
-                <mat-error *ngIf="staffForm.get('firstName').hasError('required')">
+                <mat-error *ngIf="customerForm.get('firstName').hasError('required')">
                     First name is required
                 </mat-error>
 
@@ -42,7 +42,7 @@
 
                 <input type="text" formControlName="lastName" matInput required>
 
-                <mat-error *ngIf="staffForm.get('lastName').hasError('required')">
+                <mat-error *ngIf="customerForm.get('lastName').hasError('required')">
                     Last name is required
                 </mat-error>
 
@@ -57,17 +57,17 @@
 
                 <mat-error 
                     *ngIf="
-                        staffForm.get('email').hasError('exists') && 
-                        !staffForm.get('email').hasError('email') && 
-                        !staffForm.get('email').hasError('required')">
+                    customerForm.get('email').hasError('exists') && 
+                    !customerForm.get('email').hasError('email') && 
+                    !customerForm.get('email').hasError('required')">
                     Email already exists
                 </mat-error>
 
-                <mat-error *ngIf="staffForm.get('email').hasError('email') && !staffForm.get('email').hasError('required')">
+                <mat-error *ngIf="customerForm.get('email').hasError('email') && !customerForm.get('email').hasError('required')">
                     Please enter a valid email address
                 </mat-error>
 
-                <mat-error *ngIf="staffForm.get('email').hasError('required')">
+                <mat-error *ngIf="customerForm.get('email').hasError('required')">
                     Email is required
                 </mat-error>
 
@@ -79,13 +79,13 @@
 
                 <input type="text" formControlName="phone" matInput required>
 
-                <mat-error *ngIf="staffForm.get('phone').hasError('required')">
+                <mat-error *ngIf="customerForm.get('phone').hasError('required')">
                     Phone number is required
                 </mat-error>
 
             </mat-form-field>
 
-            <mat-checkbox *ngIf="staffForm.get('active').enabled" formControlName="active">Active</mat-checkbox>
+            <mat-checkbox *ngIf="customerForm.get('active').enabled" formControlName="active">Active</mat-checkbox>
 
         </form>
 
@@ -99,7 +99,7 @@
             <button 
                 mat-raised-button 
                 color="accent"
-                [disabled]="staffForm.invalid || !formChanged()"
+                [disabled]="customerForm.invalid || !formChanged()"
                 [loading]="loading"
                 (click)="submit($event)">
                 {{ editMode ? 'Update' : 'Save' }}

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -9,34 +9,34 @@ import { NotificationService } from 'app/shared/services/notification-service';
 import { emailExistsAsyncValidator } from 'app/shared/validators/email-exists-async.validator';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { StaffService } from '../../services/staff.service';
+import { CustomerService } from '../../services/customer.service';
 import * as _ from 'lodash';
 
 @Component({
-    selector: 'app-add-edit-staff-dialog',
-    templateUrl: './add-edit-staff-dialog.component.html',
-    styleUrls: ['./add-edit-staff-dialog.component.scss'],
+    selector: 'app-add-edit-customer-dialog',
+    templateUrl: './add-edit-customer-dialog.component.html',
+    styleUrls: ['./add-edit-customer-dialog.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
         fuseAnimations
     ]
 })
-export class AddEditStaffDialogComponent implements OnInit {
+export class AddEditCustomerDialogComponent implements OnInit, OnDestroy {
 
     private _unsubscribeAll: Subject<any>;
 
-    staffForm: FormGroup;
+    customerForm: FormGroup;
     loading: boolean;
     editMode: boolean;
-    staff: User;
+    customer: User;
 
     constructor(
-        public matDialogRef: MatDialogRef<AddEditStaffDialogComponent>,
+        public matDialogRef: MatDialogRef<AddEditCustomerDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
         private _formBuilder: FormBuilder,
         private _notificationService: NotificationService,
         private _commonService: CommonService,
-        private _staffService: StaffService
+        private _customerService: CustomerService
     ) {
 
         this._unsubscribeAll = new Subject();
@@ -44,8 +44,8 @@ export class AddEditStaffDialogComponent implements OnInit {
         this.loading = false;
         this.createForm();
 
-        this.staff = this._data.staff || null;
-        this.editMode = this.staff ? true : false;
+        this.customer = this._data.customer || null;
+        this.editMode = this.customer ? true : false;
 
     }
 
@@ -68,7 +68,7 @@ export class AddEditStaffDialogComponent implements OnInit {
 
     createForm(): void {
 
-        this.staffForm = this._formBuilder.group({
+        this.customerForm = this._formBuilder.group({
             id: new FormControl(null, [Validators.required]),
             firstName: new FormControl(null, [Validators.required]),
             lastName: new FormControl(null, [Validators.required]),
@@ -81,23 +81,23 @@ export class AddEditStaffDialogComponent implements OnInit {
 
     setEditData(): void {
 
-        this.staffForm.patchValue({
-            id: this.staff.id,
-            firstName: this.staff.firstName,
-            lastName: this.staff.lastName,
-            email: this.staff.email,
-            phone: this.staff.phone,
-            active: this.staff.active
+        this.customerForm.patchValue({
+            id: this.customer.id,
+            firstName: this.customer.firstName,
+            lastName: this.customer.lastName,
+            email: this.customer.email,
+            phone: this.customer.phone,
+            active: this.customer.active
         });
 
-        this.staffForm.get('email').disable();
+        this.customerForm.get('email').disable();
 
     }
 
     prepareNewForm(): void {
 
-        this.staffForm.get('active').disable();
-        this.staffForm.get('id').disable();
+        this.customerForm.get('active').disable();
+        this.customerForm.get('id').disable();
 
     }
 
@@ -105,8 +105,8 @@ export class AddEditStaffDialogComponent implements OnInit {
 
         if (this.editMode) {
 
-            const formValue = this.staffForm.value;
-            const originalValue = _.pick(this.staff, ['firstName', 'lastName', 'phone', 'active', 'id']);
+            const formValue = this.customerForm.value;
+            const originalValue = _.pick(this.customer, ['firstName', 'lastName', 'phone', 'active', 'id']);
 
             return !_.isEqual(formValue, originalValue);
 
@@ -121,17 +121,17 @@ export class AddEditStaffDialogComponent implements OnInit {
 
         event.preventDefault();
 
-        if (this.staffForm.invalid) {
+        if (this.customerForm.invalid) {
             return;
         }
 
-        const sendObj = this.staffForm.value;
+        const sendObj = this.customerForm.value;
         
         this.loading = true;
 
         if (this.editMode) {
 
-            this._staffService.updateStaff(sendObj)
+            this._customerService.updateCustomer(sendObj)
                 .pipe(
                     takeUntil(this._unsubscribeAll),
                     finalize(() => {
@@ -144,30 +144,9 @@ export class AddEditStaffDialogComponent implements OnInit {
                     }
 
                     setTimeout(() => {
-                        this._staffService.listStaff().subscribe();
+                        this._customerService.listCustomers().subscribe();
                         this.matDialogRef.close();
                     }, 500);
-
-                });
-
-        } else {
-
-            this._staffService.addStaff(sendObj)
-                .pipe(
-                    takeUntil(this._unsubscribeAll),
-                    finalize(() => {
-                        this.loading = false;
-                    })
-                ).subscribe((message: string) => {
-
-                    if (message) {
-                        this._notificationService.displayNotification(message, NotificationType.SUCCESS);
-                    }
-
-                    setTimeout(() => {
-                        this.matDialogRef.close();
-                        this._staffService.listStaff().subscribe();
-                    }, 100);
 
                 });
 
@@ -175,4 +154,5 @@ export class AddEditStaffDialogComponent implements OnInit {
 
 
     }
+
 }

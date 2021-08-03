@@ -58,7 +58,7 @@ export class ChangePasswordDialogComponent implements OnInit, OnDestroy {
         this.passwordForm = this._formBuilder.group({
             current_password: new FormControl(null, [Validators.required]),
             password: new FormControl(null, [Validators.required]),
-            confirm_password: new FormControl(null, [Validators.required, passwordMatchValidator]),
+            confirmPassword: new FormControl(null, [Validators.required, passwordMatchValidator]),
         });
 
     }
