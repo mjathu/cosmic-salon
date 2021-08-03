@@ -24,12 +24,12 @@ class DatabaseSeeder extends Seeder
         User::factory()->count(1)->staff()->create([
             'email' => 'staff@gmail.com'
         ]);
-        User::factory()->count(3)->staff()->create();
+        User::factory()->count(25)->staff()->create();
 
         // Client
         User::factory()->count(1)->client()->create([
             'email' => 'client@gmail.com'
         ]);
-        User::factory()->count(2)->client()->create();
+        User::factory()->count(25)->client()->create();
     }
 }

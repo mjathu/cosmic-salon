@@ -5,6 +5,7 @@ use App\Enums\ResponseCode;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommonController;
+use App\Http\Controllers\StaffController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -18,6 +19,7 @@ Route::get('/check-email-exists', [CommonController::class, 'checkExistingEmail'
 Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+Route::post('/staff-set-password', [AuthController::class, 'setStaffPassword']);
 //---------- /Open Routes --------------//
 
 
@@ -27,6 +29,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Profile Routes
     Route::post('/update-profile', [CommonController::class, 'updateProfile']);
     Route::post('/change-password', [AuthController::class, 'changePassword']);
+    Route::post('/staff-new-password', [AuthController::class, 'staffNewPassword']);
+
+    // Staff Routes
+    Route::get('/staff-list', [StaffController::class, 'list']);
+    Route::post('/staff-store', [StaffController::class, 'store']);
+    Route::post('/staff-update', [StaffController::class, 'update']);
+    Route::post('/staff-delete', [StaffController::class, 'delete']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 

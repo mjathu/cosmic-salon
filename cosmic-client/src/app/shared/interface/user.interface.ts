@@ -3,7 +3,7 @@ export interface User {
     firstName: string;
     lastName: string;
     fullName: string;
-    status: boolean;
+    active: boolean;
     email: string;
     createdAt: string;
     updatedAt: string;

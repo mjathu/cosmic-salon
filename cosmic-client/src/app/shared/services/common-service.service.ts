@@ -85,7 +85,7 @@ export class CommonService {
                     title    : 'Staff',
                     type     : 'item',
                     icon     : 'people',
-                    url      : '/staffs'
+                    url      : '/staff'
                 },
                 {
                     id       : 'customer',

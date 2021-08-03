@@ -1,0 +1,21 @@
+@import "src/@fuse/scss/fuse";
+
+:host {
+
+    mat-table {
+        // width: 80%;
+    }
+
+    @include media-breakpoint('gt-lg') {
+
+        mat-table {
+            // width: 768px;
+        }
+
+    }
+
+    .mat-column-buttons {
+        max-width: 100px;
+    }
+
+}

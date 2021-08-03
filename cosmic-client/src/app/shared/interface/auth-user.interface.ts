@@ -4,7 +4,7 @@ export interface AuthUser {
     firstName: string;
     lastName: string;
     fullName: string;
-    status: boolean;
+    active: boolean;
     email: string;
     phone: string;
     token?: string;

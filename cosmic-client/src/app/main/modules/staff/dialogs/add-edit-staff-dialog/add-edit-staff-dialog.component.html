@@ -1,0 +1,117 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="primary-400 m-0">
+
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+
+            <span class="title dialog-title"> {{ editMode ? 'Edit' : 'Add' }} Staff</span>
+
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+
+        </mat-toolbar-row>
+
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{ suppressScrollX: true }">
+
+        <form 
+            name="staffForm" 
+            [formGroup]="staffForm" 
+            fxLayout="row wrap" 
+            fxLayoutGap="16px"
+            fxLayout.lt-sm="column"
+            fxLayoutAlign="flex-start">
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>First Name</mat-label>
+
+                <input type="text" formControlName="first_name" matInput required>
+
+                <mat-error *ngIf="staffForm.get('first_name').hasError('required')">
+                    First name is required
+                </mat-error>
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Last Name</mat-label>
+
+                <input type="text" formControlName="last_name" matInput required>
+
+                <mat-error *ngIf="staffForm.get('last_name').hasError('required')">
+                    Last name is required
+                </mat-error>
+
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Email</mat-label>
+
+                <input type="email" formControlName="email" matInput required>
+
+                <mat-error 
+                    *ngIf="
+                        staffForm.get('email').hasError('exists') && 
+                        !staffForm.get('email').hasError('email') && 
+                        !staffForm.get('email').hasError('required')">
+                    Email already exists
+                </mat-error>
+
+                <mat-error *ngIf="staffForm.get('email').hasError('email') && !staffForm.get('email').hasError('required')">
+                    Please enter a valid email address
+                </mat-error>
+
+                <mat-error *ngIf="staffForm.get('email').hasError('required')">
+                    Email is required
+                </mat-error>
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Phone</mat-label>
+
+                <input type="text" formControlName="phone" matInput required>
+
+                <mat-error *ngIf="staffForm.get('phone').hasError('required')">
+                    Phone number is required
+                </mat-error>
+
+            </mat-form-field>
+
+            <mat-checkbox *ngIf="staffForm.get('active').enabled" formControlName="active">Active</mat-checkbox>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div></div>
+        
+        <div>
+            <button 
+                mat-raised-button 
+                color="accent"
+                [disabled]="staffForm.invalid"
+                [loading]="loading"
+                (click)="submit($event)">
+                {{ editMode ? 'Update' : 'Save' }}
+            </button>
+
+            <button 
+                mat-raised-button 
+                color="warn"
+                (click)="matDialogRef.close()">
+                Close
+            </button>
+        </div>
+        
+    </div>
+</div>

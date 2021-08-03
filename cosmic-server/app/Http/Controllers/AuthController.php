@@ -9,6 +9,7 @@ use App\Exceptions\ApiException;
 use App\Http\Resources\UserResource;
 use App\Mail\EmailVerification;
 use App\Models\User;
+use App\Notifications\EmailVerfication;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
@@ -130,7 +131,9 @@ class AuthController extends Controller
             $newUser->role = RoleType::CLIENT;
             $newUser->save();
 
-            Mail::to($newUser)->send(new EmailVerification($newUser));
+            $url = Helpers::getUserEmailVerificationUrl($newUser);
+
+            $newUser->notify(new EmailVerfication($url, $newUser));
 
             DB::commit();
 
@@ -328,6 +331,52 @@ class AuthController extends Controller
                 ResponseCode::CODE_200,
                 'Password Change Success',
                 new UserResource($user, ['token' => $token])
+            ), ResponseCode::CODE_200);
+        
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            if($e instanceof ValidationException)
+            {
+                throw new ValidationException($e->validator);
+            }
+
+            throw new ApiException($e->getMessage(), $e->getCode(), $e);
+
+        }
+
+    }
+
+    public function setStaffPassword(Request $request)
+    {
+
+        DB::beginTransaction();
+
+        try {
+
+            $validated = $request->validate([
+                'id' => 'required',
+                'password' => 'required',
+                'confirm_password' => 'required'
+            ]);
+        
+            $decId = Helpers::decodeId($request->input('id'));
+
+            $user = User::findOrFail($decId);
+
+            $user->password = Hash::make($request->input('password'));
+            $user->remember_token = Str::random(10);
+            $user->active = true;
+            $user->email_verified_at = Carbon::now();
+            $user->save();
+
+            DB::commit();
+
+            return response()->json(ResponseHelper::buildJsonResponse(
+                ResponseCode::CODE_200,
+                'Account Setup Success'
             ), ResponseCode::CODE_200);
         
 

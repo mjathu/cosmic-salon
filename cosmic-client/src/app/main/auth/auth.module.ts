@@ -43,7 +43,7 @@ const routes: Routes = [
         canActivate: [OpenRouteGuard]
     },
     {
-        path: 'new-password',
+        path: 'staff-account-setup',
         component: NewPasswordComponent,
         canActivate: [OpenRouteGuard]
     }

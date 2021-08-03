@@ -24,6 +24,8 @@ import { AppErrorHandler } from './shared/error/error-handler';
 import { HttpAuthInterceptor } from './shared/interceptors/http-auth.interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { NgxUiLoaderModule } from "ngx-ui-loader";
+
 const appRoutes: Routes = [
     {
         path: 'welcome',
@@ -36,6 +38,10 @@ const appRoutes: Routes = [
     {
         path: 'profile',
         loadChildren: () => import('./main/modules/profile/profile.module').then((m) => m.ProfileModule)
+    },
+    {
+        path: 'staff',
+        loadChildren: () => import('./main/modules/staff/staff.module').then((m) => m.StaffModule)
     },
     {
         path      : '**',

@@ -175,17 +175,29 @@ export class AuthService {
     changePassword(data: any): Observable<any> {
 
         return this._httpClient.post(`${Const.apiBaseUrl}/change-password`, data)
-        .pipe(
-            tap((response: ApiCommonResponse) => {
-                
-                this.updateAuthUserProfile(response.data);
+            .pipe(
+                tap((response: ApiCommonResponse) => {
+                    
+                    this.updateAuthUserProfile(response.data);
 
-            }),
-            map((response: ApiCommonResponse) => {
-                return response.message;
-            }), 
-            shareReplay()
-        );
+                }),
+                map((response: ApiCommonResponse) => {
+                    return response.message;
+                }), 
+                shareReplay()
+            );
+
+    }
+
+    staffNewPassword(data: any): Observable<any> {
+
+        return this._httpClient.post(`${Const.apiBaseUrl}/staff-set-password`, data)
+            .pipe(
+                map((response: ApiCommonResponse) => {
+                    return response.message;
+                }), 
+                shareReplay()
+            );
 
     }
 }

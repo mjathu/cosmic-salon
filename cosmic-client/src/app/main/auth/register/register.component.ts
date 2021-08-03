@@ -78,8 +78,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     createForm(): void {
 
         this.registerForm = this._formBuilder.group({
-            first_name: new FormControl('sdfa', [Validators.required]),
-            last_name: new FormControl('nsdfa', [Validators.required]),
+            first_name: new FormControl(null, [Validators.required]),
+            last_name: new FormControl(null, [Validators.required]),
             email: new FormControl(null, [Validators.required, Validators.email], [emailExistsAsyncValidator(this._commonService)]),
             password: new FormControl(null, [Validators.required, Validators.min(6)]),
             confirm_password: new FormControl(null, [Validators.required, passwordMatchValidator])
