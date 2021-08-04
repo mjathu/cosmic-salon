@@ -1,0 +1,115 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="primary-400 m-0">
+
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+
+            <span class="title dialog-title"> {{ editMode ? 'Edit' : 'Add' }} Service</span>
+
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+
+        </mat-toolbar-row>
+
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{ suppressScrollX: true }">
+
+        <form 
+            name="serviceForm" 
+            [formGroup]="serviceForm" 
+            fxLayout="row wrap" 
+            fxLayoutGap="16px"
+            fxLayout.lt-sm="column"
+            fxLayoutAlign="flex-start">
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Name</mat-label>
+
+                <input type="text" formControlName="name" matInput required>
+
+                <mat-error *ngIf="serviceForm.get('name').hasError('required')">
+                    Name is required
+                </mat-error>
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Description</mat-label>
+
+                <input type="text" formControlName="description" matInput required>
+
+                <mat-error *ngIf="serviceForm.get('description').hasError('required')">
+                    Description is required
+                </mat-error>
+
+
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Price</mat-label>
+
+                <input type="number" formControlName="price" matInput required>
+
+                <mat-error *ngIf="serviceForm.get('price').hasError('min') && !serviceForm.get('price').hasError('required')">
+                    Minimum 10 is required
+                </mat-error>
+
+                <mat-error *ngIf="serviceForm.get('price').hasError('required')">
+                    Price is required
+                </mat-error>
+
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Duration</mat-label>
+
+                <input type="number" formControlName="duration" matInput required placeholder="Minutes">
+
+                <mat-error *ngIf="serviceForm.get('duration').hasError('min') && !serviceForm.get('duration').hasError('required')">
+                    Minimum 10 is required
+                </mat-error>
+
+                <mat-error *ngIf="serviceForm.get('duration').hasError('required')">
+                    Duration is required
+                </mat-error>
+
+
+            </mat-form-field>
+
+            <mat-checkbox *ngIf="serviceForm.get('active').enabled" formControlName="active">Active</mat-checkbox>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div></div>
+        
+        <div>
+            <button 
+                mat-raised-button 
+                color="accent"
+                [disabled]="serviceForm.invalid || !formChanged()"
+                [loading]="loading"
+                (click)="submit($event)">
+                {{ editMode ? 'Update' : 'Save' }}
+            </button>
+
+            <button 
+                mat-raised-button 
+                color="warn"
+                (click)="matDialogRef.close()">
+                Close
+            </button>
+        </div>
+        
+    </div>
+</div>

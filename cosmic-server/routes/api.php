@@ -6,6 +6,7 @@ use App\Exceptions\ApiException;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,6 +43,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/customer-list', [CustomerController::class, 'list']);
     Route::post('/customer-update', [CustomerController::class, 'update']);
     Route::post('/customer-delete', [CustomerController::class, 'delete']);
+
+    // Service Routes
+    Route::get('/service-list', [ServiceController::class, 'list']);
+    Route::post('/service-store', [ServiceController::class, 'store']);
+    Route::post('/service-update', [ServiceController::class, 'update']);
+    Route::post('/service-delete', [ServiceController::class, 'delete']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 

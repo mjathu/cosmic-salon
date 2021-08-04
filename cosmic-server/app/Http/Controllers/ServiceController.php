@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ErrorType;
 use App\Enums\ResponseCode;
-use App\Enums\RoleType;
 use App\Exceptions\ApiException;
-use App\Http\Resources\UserResource;
-use App\Http\Resources\UserResourceCollection;
-use App\Models\User;
-use App\Notifications\StaffNewPassword;
-use Illuminate\Http\Request;
-use ResponseHelper;
+use App\Http\Resources\ServiceResourceCollection;
+use App\Models\Service;
 use Exception;
 use Helpers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use ResponseHelper;
 
-class StaffController extends Controller
+class ServiceController extends Controller
 {
     
     public function list(Request $request)
@@ -28,12 +21,12 @@ class StaffController extends Controller
 
         try {
 
-            $staffList = User::Staff()->orderBy('id', 'desc')->get();
+            $serviceList = Service::orderBy('id', 'desc')->get();
 
             return response()->json(ResponseHelper::buildJsonResponse(
                 ResponseCode::CODE_200,
                 'Success',
-                new UserResourceCollection($staffList)
+                new ServiceResourceCollection($serviceList)
             ), ResponseCode::CODE_200);
         
 
@@ -53,43 +46,26 @@ class StaffController extends Controller
         try {
 
             $validated = $request->validate([
-                'email' => 'required',
-                'phone' => 'required',
-                'firstName' => 'required',
-                'lastName' => 'required'
+                'name' => 'required',
+                'description' => 'required',
+                'duration' => 'required',
+                'price' => 'required'
             ]);
-        
-            $existingUser = User::where('email', $request->input('email'))->first();
 
-            if ($existingUser)
-            {
-                throw new Exception('Email already exists', ErrorType::CustomError);
-            }
-
-            $staff = new User();
-            $staff->first_name = $request->input('firstName');
-            $staff->last_name = $request->input('lastName');
-            $staff->email = $request->input('email');
-            $staff->password = Hash::make(Helpers::STAFF_DEFAULT_PASSWORD);
-            $staff->phone = $request->input('phone');
-            $staff->email_verified_at = null;
-            $staff->remember_token = Str::random(10);
-            $staff->code = Str::random(10);
-            $staff->active = false;
-            $staff->role = RoleType::STAFF;
-            $staff->save();
-
-            $url = Helpers::getStaffAccountSetupUrl($staff);
-
-            $staff->notify(new StaffNewPassword($url, $staff));
+            $service = new Service();
+            $service->name = $request->input('name');
+            $service->description = $request->input('description');
+            $service->duration = $request->input('duration');
+            $service->price = $request->input('price');
+            $service->active = true;
+            $service->save();
 
             DB::commit();
 
             return response()->json(ResponseHelper::buildJsonResponse(
                 ResponseCode::CODE_200,
-                'Staff Added'
+                'Service Added'
             ), ResponseCode::CODE_200);
-        
 
         } catch (Exception $e) {
 
@@ -115,26 +91,28 @@ class StaffController extends Controller
 
             $validated = $request->validate([
                 'id' => 'required',
-                'phone' => 'required',
-                'firstName' => 'required',
-                'lastName' => 'required',
+                'name' => 'required',
+                'description' => 'required',
+                'duration' => 'required',
+                'price' => 'required',
                 'active' => ['required', 'boolean']
             ]);
         
             $decId = Helpers::decodeId($request->input('id'));
 
-            $staff = User::findOrFail($decId);
-            $staff->first_name = $request->input('firstName');
-            $staff->last_name = $request->input('lastName');
-            $staff->phone = $request->input('phone');
-            $staff->active = $request->input('active');
-            $staff->save();
+            $service = Service::findOrFail($decId);
+            $service->name = $request->input('name');
+            $service->description = $request->input('description');
+            $service->duration = $request->input('duration');
+            $service->price = $request->input('price');
+            $service->active = $request->input('active');
+            $service->save();
 
             DB::commit();
 
             return response()->json(ResponseHelper::buildJsonResponse(
                 ResponseCode::CODE_200,
-                'Staff Updated'
+                'Service Updated'
             ), ResponseCode::CODE_200);
         
 
@@ -166,15 +144,15 @@ class StaffController extends Controller
         
             $decId = Helpers::decodeId($request->input('id'));
 
-            $staff = User::findOrFail($decId);
+            $service = Service::findOrFail($decId);
 
-            $staff->delete();
+            $service->delete();
 
             DB::commit();
 
             return response()->json(ResponseHelper::buildJsonResponse(
                 ResponseCode::CODE_200,
-                'Staff Deleted'
+                'Service Deleted'
             ), ResponseCode::CODE_200);
         
 
@@ -192,6 +170,5 @@ class StaffController extends Controller
         }
 
     }
-
 
 }

@@ -32,6 +32,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'role' => 'staff',
             'active' => true,
+            'code' => Str::random(10),
             'created_at' => now(),
             'updated_at' => now()
         ];

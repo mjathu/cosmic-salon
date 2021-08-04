@@ -16,3 +16,11 @@
     top: calc(50% - 10px);
     left: calc(50% - 10px);
 }
+
+.mat-icon {
+
+    &.inline {
+        display: inline;
+    }
+
+}

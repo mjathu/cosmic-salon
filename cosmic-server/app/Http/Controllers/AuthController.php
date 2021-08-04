@@ -127,6 +127,7 @@ class AuthController extends Controller
             $newUser->password = Hash::make($request->input('password'));
             $newUser->email_verified_at = null;
             $newUser->remember_token = Str::random(10);
+            $newUser->code = Str::random(10);
             $newUser->active = false;
             $newUser->role = RoleType::CUSTOMER;
             $newUser->save();

@@ -73,12 +73,19 @@ export class CommonService {
                     icon     : 'home',
                     url      : '/home'
                 },
+                // {
+                //     id       : 'welcome',
+                //     title    : 'Welcome',
+                //     type     : 'item',
+                //     icon     : 'home',
+                //     url      : '/welcome'
+                // },
                 {
-                    id       : 'welcome',
-                    title    : 'Welcome',
+                    id       : 'service',
+                    title    : 'Services',
                     type     : 'item',
-                    icon     : 'home',
-                    url      : '/welcome'
+                    icon     : 'settings',
+                    url      : '/services'
                 },
                 {
                     id       : 'staff',
