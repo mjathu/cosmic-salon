@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('code');
+            $table->string('stripe_customer_id')->nullable()->default(NULL);
             $table->enum('role', [
                 'admin',
                 'staff',

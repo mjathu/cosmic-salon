@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize, map, shareReplay, tap } from 'rxjs/operators';
 import { Const } from '../Const';
-import { AuthUser } from '../interface/auth-user.interface';
 import { ApiCommonResponse } from '../interface/http-common-response.interface';
 import { User } from '../interface/user.interface';
 
@@ -14,9 +13,9 @@ import { User } from '../interface/user.interface';
 export class AuthService {
 
     private _isAuthenticated: boolean;
-    private _currentUserSubject: BehaviorSubject<AuthUser>;
+    private _currentUserSubject: BehaviorSubject<User>;
     onAuthChange: BehaviorSubject<boolean>;
-    currentUser: Observable<AuthUser>;
+    currentUser: Observable<User>;
 
     constructor (
         private _router: Router,
@@ -24,13 +23,13 @@ export class AuthService {
     ) {
 
         this._isAuthenticated = this.getCurrentUserLocalStorage() ? true : false;
-        this._currentUserSubject = new BehaviorSubject<AuthUser>(this.getCurrentUserLocalStorage());
+        this._currentUserSubject = new BehaviorSubject<User>(this.getCurrentUserLocalStorage());
         this.currentUser = this._currentUserSubject.asObservable();
         this.onAuthChange = new BehaviorSubject(this._isAuthenticated);
 
     }
 
-    setCurrentUserLocalStorage(authUser: AuthUser): void {
+    setCurrentUserLocalStorage(authUser: User): void {
         localStorage.setItem(Const.storageKeyName.currentUser, JSON.stringify(authUser));
     }
 
@@ -38,11 +37,11 @@ export class AuthService {
         localStorage.removeItem(Const.storageKeyName.currentUser);
     }
 
-    getCurrentUserLocalStorage(): AuthUser | null {
+    getCurrentUserLocalStorage(): User | null {
         return JSON.parse(localStorage.getItem(Const.storageKeyName.currentUser));
     }
 
-    get currentUserValue(): AuthUser {
+    get currentUserValue(): User {
         return this._currentUserSubject.value;
     }
 
@@ -57,7 +56,7 @@ export class AuthService {
                 map((response: ApiCommonResponse) => {
                     return response.data || {};
                 }),
-                tap((user: AuthUser) => {
+                tap((user: User) => {
 
                     this.loginSteps(user);
 
@@ -67,7 +66,7 @@ export class AuthService {
 
     }
 
-    loginSteps(user: AuthUser): void {
+    loginSteps(user: User): void {
         this.setCurrentUserLocalStorage(user);
         this._isAuthenticated = true;
         this._currentUserSubject.next(user);
@@ -158,7 +157,7 @@ export class AuthService {
 
     }
 
-    updateAuthUserProfile(user: AuthUser | User): void {
+    updateAuthUserProfile(user: User | User): void {
         
         if (this.currentUserValue.id === user.id) {
 

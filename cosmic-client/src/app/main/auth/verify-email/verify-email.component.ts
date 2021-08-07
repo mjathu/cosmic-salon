@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfigService } from '@fuse/services/config.service';
-import { AuthUser } from 'app/shared/interface/auth-user.interface';
+import { User } from 'app/shared/interface/user.interface';
 import { AuthService } from 'app/shared/services/auth.service';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
@@ -65,7 +65,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
                     this.loading = false;
                 })
             )
-            .subscribe((user: AuthUser) => {
+            .subscribe((user: User) => {
                 this.success = true;
 
                 setTimeout(() => {

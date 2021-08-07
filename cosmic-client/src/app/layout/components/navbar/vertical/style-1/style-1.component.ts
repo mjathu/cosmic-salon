@@ -7,8 +7,8 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthUser } from 'app/shared/interface/auth-user.interface';
 import { AuthService } from 'app/shared/services/auth.service';
+import { User } from 'app/shared/interface/user.interface';
 
 @Component({
     selector     : 'navbar-vertical-style-1',
@@ -20,7 +20,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
 {
     fuseConfig: any;
     navigation: any;
-    authUser: AuthUser;
+    authUser: User;
 
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
@@ -130,7 +130,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
             .pipe(
                 takeUntil(this._unsubscribeAll)
             )
-            .subscribe((user: AuthUser) => {
+            .subscribe((user: User) => {
                 this.authUser = user || null;
             });
     }

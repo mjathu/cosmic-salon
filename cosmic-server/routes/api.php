@@ -6,6 +6,7 @@ use App\Exceptions\ApiException;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
 use App\Models\User;
@@ -49,6 +50,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/service-store', [ServiceController::class, 'store']);
     Route::post('/service-update', [ServiceController::class, 'update']);
     Route::post('/service-delete', [ServiceController::class, 'delete']);
+
+    // Payment Method Routes
+    Route::get('/payment-method-list', [PaymentMethodController::class, 'list']);
+    Route::post('/payment-method-store', [PaymentMethodController::class, 'store']);
+    Route::post('/payment-method-update', [PaymentMethodController::class, 'update']);
+    Route::post('/payment-method-delete', [PaymentMethodController::class, 'delete']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 

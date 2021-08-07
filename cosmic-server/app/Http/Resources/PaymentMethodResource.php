@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class PaymentMethodResource extends JsonResource
 {
     private $params;
 
@@ -32,24 +32,19 @@ class UserResource extends JsonResource
 
         $result = [
             "id" => $this->hashid,
-            "firstName" => $this->first_name,
-            "lastName" => $this->last_name,
-            "fullName" => $this->full_name,
-            "email" => $this->email,
-            "phone" => $this->phone,
-            "rememberToken" => $this->remember_token,
-            "role" => $this->role,
-            "active" => $this->active,
+            "cardReference" => $this->card_reference,
+            "fingerprint" => $this->fingerprint,
+            "brand" => $this->brand,
+            "lastDigits" => $this->last_digits,
+            "expMonth" => $this->exp_month,
+            "expYear" => $this->exp_year,
+            "default" => $this->default,
+            "cardNumber" => $this->card_number,
+            "expiry" => $this->expiry,
             "createdAt" => $this->created_at,
             "updatedAt" => $this->updated_at,
-            "paymentMethods" => new PaymentMethodResourceCollection($this->whenLoaded('paymentMethods')),
-            "defaultPaymentMethod" => new PaymentMethodResource($this->whenLoaded('defaultPaymentMethod'))
+            "user" => new UserResource($this->whenLoaded('user'))
         ];
-
-        if (array_key_exists('token', $this->params) && !empty($this->params['token']))
-        {
-            $result['token'] = $this->params['token'];
-        }
 
         return $result;
     }

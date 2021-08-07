@@ -2,36 +2,36 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Const } from 'app/shared/Const';
 import { ApiCommonResponse } from 'app/shared/interface/http-common-response.interface';
-import { User } from 'app/shared/interface/user.interface';
+import { PaymentMethod } from 'app/shared/interface/payment-method.interface';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { finalize, map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
-export class CustomerService {
+export class PaymentMethodService {
 
     onTableLoading: Subject<boolean>;
-    onCustomerDataChanged: BehaviorSubject<User[]>;
+    onPaymentMethodDataChanged: BehaviorSubject<PaymentMethod[]>;
 
     constructor(
         private _httpClient: HttpClient
     ) {
 
         this.onTableLoading = new Subject();
-        this.onCustomerDataChanged = new BehaviorSubject([]);
+        this.onPaymentMethodDataChanged = new BehaviorSubject([]);
 
     }
 
-    listCustomers(): Observable<any> {
+    listPaymentMethod(): Observable<any> {
 
         this.onTableLoading.next(true);
 
-        return this._httpClient.get(`${Const.apiBaseUrl}/customer-list`)
+        return this._httpClient.get(`${Const.apiBaseUrl}/payment-method-list`)
             .pipe(
                 map((response: ApiCommonResponse) => {
 
-                    this.onCustomerDataChanged.next(response.data);
+                    this.onPaymentMethodDataChanged.next(response.data);
 
                     return response.data;
                 }),
@@ -43,9 +43,9 @@ export class CustomerService {
 
     }
 
-    updateCustomer(postData: any): Observable<any> {
+    addPaymentMethod(postData: any): Observable<any> {
 
-        return this._httpClient.post(`${Const.apiBaseUrl}/customer-update`, postData)
+        return this._httpClient.post(`${Const.apiBaseUrl}/payment-method-store`, postData)
             .pipe(
                 map((response: ApiCommonResponse) => {
                     return response.message;
@@ -55,11 +55,28 @@ export class CustomerService {
 
     }
 
-    deleteCustomer(id: string): Observable<any> {
+    updatePaymentMethod(id: string): Observable<any> {
 
         this.onTableLoading.next(true);
 
-        return this._httpClient.post(`${Const.apiBaseUrl}/customer-delete`, {id})
+        return this._httpClient.post(`${Const.apiBaseUrl}/payment-method-update`, {id})
+            .pipe(
+                map((response: ApiCommonResponse) => {
+                    return response.message;
+                }),
+                finalize(() => {
+                    this.onTableLoading.next(false);
+                }),
+                shareReplay()
+            );
+
+    }
+
+    deletePaymentMethod(id: string): Observable<any> {
+
+        this.onTableLoading.next(true);
+
+        return this._httpClient.post(`${Const.apiBaseUrl}/payment-method-delete`, {id})
             .pipe(
                 map((response: ApiCommonResponse) => {
                     return response.message;
@@ -74,7 +91,7 @@ export class CustomerService {
 
     resetServiceData(): void {
         this.onTableLoading.next(false);
-        this.onCustomerDataChanged.next([]);
+        this.onPaymentMethodDataChanged.next([]);
     }
-    
+
 }

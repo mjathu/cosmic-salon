@@ -58,6 +58,8 @@ class AuthController extends Controller
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
+            $user->load(['defaultPaymentMethod', 'paymentMethods']);
+
             return response()->json(ResponseHelper::buildJsonResponse(
                 ResponseCode::CODE_200,
                 'Login Success',

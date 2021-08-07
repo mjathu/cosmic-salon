@@ -101,4 +101,16 @@ class User extends Authenticatable
     {
         return $query->where('role', RoleType::CUSTOMER);
     }
+
+    /*--------------------------- Relationships -----------------------------------*/
+
+    public function paymentMethods()
+    {
+        return $this->hasMany(PaymentMethod::class, 'user_id');
+    }
+
+    public function defaultPaymentMethod()
+    {
+        return $this->hasOne(PaymentMethod::class, 'user_id')->where('default', '=', true)->latest();
+    }
 }

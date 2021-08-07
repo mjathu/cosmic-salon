@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { AuthUser } from 'app/shared/interface/auth-user.interface';
 import { AuthService } from 'app/shared/services/auth.service';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash';
@@ -12,6 +11,7 @@ import { NotificationType } from 'app/shared/enum/notification-type.enum';
 import { ApiCommonResponse } from 'app/shared/interface/http-common-response.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from './dialog/change-password-dialog/change-password-dialog.component';
+import { User } from 'app/shared/interface/user.interface';
 
 @Component({
     selector: 'app-user-details',
@@ -27,7 +27,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 
     profileForm: FormGroup;
     loading: boolean;
-    user: AuthUser;
+    user: User;
 
     constructor(
         private _formBuilder: FormBuilder,

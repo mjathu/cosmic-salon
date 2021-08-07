@@ -5,11 +5,11 @@ import { FuseNavigation } from '@fuse/types';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Const } from '../Const';
-import { AuthUser } from '../interface/auth-user.interface';
 import { ApiCommonResponse } from '../interface/http-common-response.interface';
 import { AuthService } from './auth.service';
 import * as _ from 'lodash';
 import { UserLevel } from '../enum/user-level.enum';
+import { User } from '../interface/user.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -59,7 +59,7 @@ export class CommonService {
             return [];
         }
 
-        const authUser: AuthUser = this._authService.currentUserValue;
+        const authUser: User = this._authService.currentUserValue;
 
         let navItems = [];
 
@@ -73,13 +73,6 @@ export class CommonService {
                     icon     : 'home',
                     url      : '/home'
                 },
-                // {
-                //     id       : 'welcome',
-                //     title    : 'Welcome',
-                //     type     : 'item',
-                //     icon     : 'home',
-                //     url      : '/welcome'
-                // },
                 {
                     id       : 'service',
                     title    : 'Services',
@@ -124,6 +117,13 @@ export class CommonService {
                     type     : 'item',
                     icon     : 'home',
                     url      : '/home'
+                },
+                {
+                    id       : 'payment-method',
+                    title    : 'Payment Method',
+                    type     : 'item',
+                    icon     : 'credit_card',
+                    url      : '/payment-method'
                 }
             ];
 

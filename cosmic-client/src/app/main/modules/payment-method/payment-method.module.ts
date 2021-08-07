@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ServiceCategoryComponent } from './service-category.component';
-import { AddEditServiceCategoryDialogComponent } from './dialogs/add-edit-service-category-dialog/add-edit-service-category-dialog.component';
+import { PaymentMethodComponent } from './payment-method.component';
+import { AddPaymentMethodDialogComponent } from './dialogs/add-payment-method-dialog/add-payment-method-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -18,27 +18,31 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/shared/shared.module';
-import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { AuthGuard } from 'app/shared/guards/auth.guard';
+
+import { NgxStripeModule } from 'ngx-stripe';
+import { environment } from 'environments/environment';
 
 const routes: Routes = [
     {
         path: '',
         canActivate: [AuthGuard],
-        component: ServiceCategoryComponent
+        component: PaymentMethodComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        ServiceCategoryComponent, 
-        AddEditServiceCategoryDialogComponent
+        PaymentMethodComponent,
+        AddPaymentMethodDialogComponent
     ],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
         FuseSharedModule,
         SharedModule,
+
+        NgxStripeModule.forRoot(environment.stripeKey),
 
         MatButtonModule,
         MatIconModule,
@@ -55,4 +59,4 @@ const routes: Routes = [
         MatCheckboxModule
     ]
 })
-export class ServiceCategoryModule { }
+export class PaymentMethodModule { }

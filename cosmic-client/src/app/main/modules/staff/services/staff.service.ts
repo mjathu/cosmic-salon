@@ -70,10 +70,15 @@ export class StaffService {
 
     deleteStaff(id: string): Observable<any> {
 
+        this.onTableLoading.next(true);
+
         return this._httpClient.post(`${Const.apiBaseUrl}/staff-delete`, {id})
             .pipe(
                 map((response: ApiCommonResponse) => {
                     return response.message;
+                }),
+                finalize(() => {
+                    this.onTableLoading.next(false);
                 }),
                 shareReplay()
             );

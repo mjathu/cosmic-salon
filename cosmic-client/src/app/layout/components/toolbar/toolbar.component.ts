@@ -9,10 +9,10 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { navigation } from 'app/navigation/navigation';
 import { fuseAnimations } from '@fuse/animations';
-import { AuthUser } from 'app/shared/interface/auth-user.interface';
 import { AuthService } from 'app/shared/services/auth.service';
 import { NotificationService } from 'app/shared/services/notification-service';
 import { NotificationType } from 'app/shared/enum/notification-type.enum';
+import { User } from 'app/shared/interface/user.interface';
 
 @Component({
     selector     : 'toolbar',
@@ -33,7 +33,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
     navigation: any;
     selectedLanguage: any;
     userStatusOptions: any[];
-    authUser: AuthUser;
+    authUser: User;
     loading: boolean;
 
     // Private
@@ -130,7 +130,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
             .pipe(
                 takeUntil(this._unsubscribeAll)
             )
-            .subscribe((user: AuthUser) => {
+            .subscribe((user: User) => {
                 this.authUser = user || null;
             });
     }

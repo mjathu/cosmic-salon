@@ -24,13 +24,7 @@ import { AppErrorHandler } from './shared/error/error-handler';
 import { HttpAuthInterceptor } from './shared/interceptors/http-auth.interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { NgxUiLoaderModule } from "ngx-ui-loader";
-
 const appRoutes: Routes = [
-    {
-        path: 'welcome',
-        loadChildren: () => import('./main/modules/welcome/welcome.module').then((m) => m.WelcomeModule)
-    },
     {
         path: 'home',
         loadChildren: () => import('./main/modules/home/home.module').then((m) => m.HomeModule)
@@ -50,6 +44,10 @@ const appRoutes: Routes = [
     {
         path: 'services',
         loadChildren: () => import('./main/modules/service-category/service-category.module').then((m) => m.ServiceCategoryModule)
+    },
+    {
+        path: 'payment-method',
+        loadChildren: () => import('./main/modules/payment-method/payment-method.module').then((m) => m.PaymentMethodModule)
     },
     {
         path      : '**',

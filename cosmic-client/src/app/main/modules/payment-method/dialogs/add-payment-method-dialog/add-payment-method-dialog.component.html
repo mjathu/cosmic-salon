@@ -1,0 +1,68 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="primary-400 m-0">
+
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+
+            <span class="title dialog-title">Add Payment Method</span>
+
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+
+        </mat-toolbar-row>
+
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar
+        [fusePerfectScrollbarOptions]="{ suppressScrollX: true }">
+
+        <form 
+            name="paymentMethodForm" 
+            [formGroup]="paymentMethodForm" 
+            fxLayout="row wrap" 
+            fxLayoutGap="16px"
+            fxLayout.lt-sm="column" 
+            fxLayoutAlign="flex-start">
+
+            <mat-form-field appearance="outline" fxFlex="100%">
+
+                <mat-label>Name On Card</mat-label>
+
+                <input type="text" formControlName="name" matInput required>
+
+                <mat-error *ngIf="paymentMethodForm.get('name').hasError('required')">
+                    Name is required
+                </mat-error>
+
+            </mat-form-field>
+
+        </form>
+
+        <div class="mat-elevation-z3 card-wrapper">
+
+            <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions" (change)="cardValChange($event)"></ngx-stripe-card>
+
+        </div>
+
+        
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div></div>
+
+        <div>
+            <button mat-raised-button color="accent" [disabled]="paymentMethodForm.invalid || !cardValid" [loading]="loading"
+                (click)="submit($event)">
+                Save
+            </button>
+
+            <button mat-raised-button color="warn" (click)="matDialogRef.close()">
+                Close
+            </button>
+        </div>
+
+    </div>
+</div>
