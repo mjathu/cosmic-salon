@@ -17,6 +17,11 @@
 
         <div>
 
+            <button mat-raised-button class="mr-12" color="accent" [disabled]="tableLoading" (click)="reloadTable($event)">
+                <mat-icon>sync</mat-icon>
+                Refresh
+            </button>
+
             <button mat-raised-button color="accent" (click)="openAddEditDialog($event, null)">
                 <mat-icon>add</mat-icon>
                 New Service

@@ -10,6 +10,8 @@ import { AuthService } from './auth.service';
 import * as _ from 'lodash';
 import { UserLevel } from '../enum/user-level.enum';
 import { User } from '../interface/user.interface';
+import { Booking } from '../interface/booking.interface';
+import * as moment from 'moment';
 
 @Injectable({
     providedIn: 'root'
@@ -93,6 +95,13 @@ export class CommonService {
                     type     : 'item',
                     icon     : 'people',
                     url      : '/customers'
+                },
+                {
+                    id       : 'booking',
+                    title    : 'Booking',
+                    type     : 'item',
+                    icon     : 'today',
+                    url      : '/booking'
                 }
             ];
 
@@ -105,6 +114,13 @@ export class CommonService {
                     type     : 'item',
                     icon     : 'home',
                     url      : '/home'
+                },
+                {
+                    id       : 'booking',
+                    title    : 'Booking',
+                    type     : 'item',
+                    icon     : 'today',
+                    url      : '/booking'
                 }
             ];
 
@@ -117,6 +133,13 @@ export class CommonService {
                     type     : 'item',
                     icon     : 'home',
                     url      : '/home'
+                },
+                {
+                    id       : 'booking',
+                    title    : 'Booking',
+                    type     : 'item',
+                    icon     : 'today',
+                    url      : '/booking'
                 },
                 {
                     id       : 'payment-method',
@@ -137,6 +160,37 @@ export class CommonService {
         }];
 
         
+    }
+
+    bookingEventMinToDate(time: number, date: string = null,  format: string = null): any {
+
+        let dateObj = date ? moment(date) : moment();
+
+        dateObj.startOf('day').set({
+            'hour': Math.floor( time/ 60),
+            'minute': Math.floor(time % 60),
+            'second': 0,
+            'millisecond': 0
+        });
+
+        if (format) {
+            return dateObj.format(format);
+        } else {
+            return dateObj.toDate();
+        }
+
+    }
+
+    timeInputToMin(input: string): number {
+
+        let obj = moment(input, 'HH:mm');
+
+        return obj.diff(moment().startOf('day'), 'minutes');
+
+    }
+
+    dbFormatDate(date: any): string {
+        return moment(date).format('YYYY-MM-DD');
     }
 
 }

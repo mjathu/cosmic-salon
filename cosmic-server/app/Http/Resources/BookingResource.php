@@ -4,9 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ServiceResource extends JsonResource
+class BookingResource extends JsonResource
 {
-
     private $params;
 
     public function __construct($resource, $params = [])
@@ -33,15 +32,16 @@ class ServiceResource extends JsonResource
 
         $result = [
             "id" => $this->hashid,
-            "name" => $this->name,
-            "description" => $this->description,
+            "date" => $this->date,
+            "startTime" => $this->start_time,
+            "endTime" => $this->end_time,
             "price" => $this->price,
-            "duration" => $this->duration,
-            "archived" => $this->archived,
-            "active" => $this->active,
+            "status" => $this->status,
             "createdAt" => $this->created_at,
             "updatedAt" => $this->updated_at,
-            "bookings" => new BookingResourceCollection($this->whenLoaded('bookings'))
+            "customer" => new UserResource($this->whenLoaded('customer')),
+            "staff" => new UserResource($this->whenLoaded('staff')),
+            "services" => new ServiceResourceCollection($this->whenLoaded('services')),
         ];
 
         return $result;

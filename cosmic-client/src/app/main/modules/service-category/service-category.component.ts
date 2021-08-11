@@ -120,4 +120,12 @@ export class ServiceCategoryComponent implements OnInit, OnDestroy {
 
     }
 
+    reloadTable(event: MouseEvent): void {
+        
+        event.preventDefault();
+
+        this._serviceCategoryService.listServices().subscribe();
+        
+    }
+
 }

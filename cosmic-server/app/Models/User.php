@@ -102,6 +102,23 @@ class User extends Authenticatable
         return $query->where('role', RoleType::CUSTOMER);
     }
 
+    /*--------------------------- Checks -----------------------------------*/
+
+    public function isCustomer()
+    {
+        return $this->role === RoleType::CUSTOMER;
+    }
+
+    public function isStaff()
+    {
+        return $this->role === RoleType::STAFF;
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === RoleType::ADMIN;
+    }
+
     /*--------------------------- Relationships -----------------------------------*/
 
     public function paymentMethods()

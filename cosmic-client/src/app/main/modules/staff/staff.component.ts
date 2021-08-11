@@ -118,4 +118,12 @@ export class StaffComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }
 
+    reloadTable(event: MouseEvent): void {
+        
+        event.preventDefault();
+
+        this._staffService.listStaff().subscribe();
+        
+    }
+
 }

@@ -50,6 +50,10 @@ const appRoutes: Routes = [
         loadChildren: () => import('./main/modules/payment-method/payment-method.module').then((m) => m.PaymentMethodModule)
     },
     {
+        path: 'booking',
+        loadChildren: () => import('./main/modules/booking/booking.module').then((m) => m.BookingModule)
+    },
+    {
         path      : '**',
         redirectTo: 'home'
     }

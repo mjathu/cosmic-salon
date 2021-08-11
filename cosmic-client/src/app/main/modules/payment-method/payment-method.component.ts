@@ -137,4 +137,12 @@ export class PaymentMethodComponent implements OnInit, OnDestroy {
 
     }
 
+    reloadTable(event: MouseEvent): void {
+        
+        event.preventDefault();
+
+        this._paymentMethodService.listPaymentMethod().subscribe();
+        
+    }
+
 }

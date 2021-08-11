@@ -1,0 +1,92 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="primary-400 m-0">
+
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+
+            <span class="title dialog-title">Booking Detail</span>
+
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+
+        </mat-toolbar-row>
+
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-32 m-0" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{ suppressScrollX: true }">
+
+        <div class="icon-wrapper">
+            <mat-icon>today</mat-icon>
+        </div>
+
+        <div class="content detail-view-wrapper" fxLayout="column">
+
+            <div class="dl-group m-0 mb-8">
+                <p class="key m-0 mb-4">Customer</p>
+                <p class="val m-0">{{ booking.customer.fullName }}</p>
+            </div>
+
+            <div class="dl-group m-0 mb-8">
+                <p class="key m-0 mb-4">Staff</p>
+                <p class="val m-0">{{ booking.staff.fullName }}</p>
+            </div>
+
+            <div class="dl-group m-0 mb-8">
+                <p class="key m-0 mb-4">Date</p>
+                <p class="val m-0">{{ booking.date }}</p>
+            </div>
+
+            <div class="dl-group m-0 mb-8">
+                <p class="key m-0 mb-4">Time</p>
+                <p class="val m-0">{{ getTime() }}</p>
+            </div>
+
+            <div class="dl-group m-0 mb-8">
+                <p class="key m-0 mb-4">Price</p>
+                <p class="val m-0">{{ booking.price | currency }}</p>
+            </div>
+
+            <div class="dl-group m-0 mb-8">
+                <p class="key m-0 mb-4">Services</p>
+                <div class="val m-0">
+
+                    <ul>
+                        <li *ngFor="let service of booking.services" class="mb-4">
+                            {{service.name}}-{{service.price | currency}}-{{service.duration}} Mins
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div>
+            <button 
+                mat-raised-button 
+                color="warn" 
+                *ngIf="(booking.status === bookStatusEnum.CANCELLED) && (authUser.role !== userLevelEnum.STAFF)" [loading]="loading"
+                (click)="deleteBooking($event)">
+                <mat-icon>delete</mat-icon>
+                Delete
+            </button>
+        </div>
+        
+        <div>
+
+            <button 
+                mat-raised-button 
+                color="warn"
+                (click)="matDialogRef.close()">
+                Close
+            </button>
+        </div>
+        
+    </div>
+</div>

@@ -1,0 +1,181 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="primary-400 m-0">
+
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+
+            <span class="title dialog-title"> {{ editMode ? 'Edit' : 'Add' }} Booking</span>
+
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+
+        </mat-toolbar-row>
+
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{ suppressScrollX: true }">
+
+        <form 
+            name="bookingForm" 
+            [formGroup]="bookingForm" 
+            fxLayout="row wrap" 
+            fxLayoutGap="16px"
+            fxLayout.lt-sm="column"
+            fxLayoutAlign="flex-start">
+
+            <mat-form-field appearance="outline" fxFlex="100%" *ngIf="bookingForm.get('customer').enabled">
+
+                <mat-label>Customer</mat-label>
+
+                <mat-select formControlName="customer" required>
+                    <mat-option *ngFor="let customer of customersList" [value]="customer.id">
+                        {{ customer.fullName }}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="bookingForm.get('customer').hasError('required')">
+                    Customer is required
+                </mat-error>
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="100%">
+
+                <mat-label>Staff</mat-label>
+
+                <mat-select formControlName="staff" required>
+                    <mat-option *ngFor="let staff of staffList" [value]="staff.id">
+                        {{ staff.fullName }}
+                    </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="bookingForm.get('staff').hasError('required')">
+                    Staff is required
+                </mat-error>
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Date</mat-label>
+
+                <input matInput [matDatepicker]="picker" [min]="todayDate" formControlName="date" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+
+                <mat-error *ngIf="bookingForm.get('date').hasError('required')">
+                    Date is required
+                </mat-error>
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+
+                <mat-label>Time</mat-label>
+
+                <input type="time" formControlName="startTime" matInput required>
+
+                <mat-error *ngIf="bookingForm.get('startTime').hasError('required')">
+                    Time is required
+                </mat-error>
+
+            </mat-form-field>
+
+            <div 
+                fxLayout="column"
+                fxLayoutGap="16px"
+                fxFlex="100%">
+
+                <div fxFlex="100%">
+                    <p class="font-size-16">Services</p>
+                </div>
+
+                <div formArrayName="services" fxFlex="100%" fxLayout="column" fxLayoutGap="16px">
+    
+                    <div 
+                        *ngFor="let service of serviceFormArray.controls; let i=index" 
+                        fxLayout="row"
+                        fxLayoutGap="16px">
+    
+                        <mat-form-field appearance="outline" fxFlex="0 1 calc(85% - 16px)">
+        
+                            <mat-label>Service</mat-label>
+            
+                            <mat-select [formControlName]="i" required [disabled]="disableInputs">
+                                <mat-option *ngFor="let service of servicesList" [value]="service.id">
+                                    {{ service.name }} - {{ service.price | currency }} - {{ service.duration }} Mins
+                                </mat-option>
+                            </mat-select>
+            
+                            <mat-error *ngIf="serviceFormArray.controls[i].hasError('required')">
+                                Service is required
+                            </mat-error>
+            
+                        </mat-form-field>
+                        
+                        <div fxFlex="0 1 calc(15% - 16px)">
+    
+                            <button mat-fab color="warn" [disabled]="serviceFormArray.controls.length <= 1 || disableInputs" (click)="removeService(i)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+    
+                        </div>
+    
+                    </div>
+    
+                </div>
+    
+                <button 
+                    fxFlex="50%"
+                    mat-raised-button 
+                    color="accent"
+                    (click)="addService($event)"
+                    [disabled]="disableInputs">
+                    Add Service
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div>
+
+            <button mat-raised-button color="primary" class="mr-8" [matMenuTriggerFor]="menu" [disabled]="loading" *ngIf="authUser.role !== userLevelEnum.CUSTOMER">
+                Mark As
+                <mat-icon>expand_more</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="changeStatus($event, bookingStatusEnum.COMPLETED)">Complete</button>
+                <button mat-menu-item (click)="changeStatus($event, bookingStatusEnum.NOSHOW)">No Show</button>
+                <button mat-menu-item (click)="changeStatus($event, bookingStatusEnum.CANCELLED)">Cancelled</button>
+            </mat-menu>
+
+        </div>
+        
+        <div>
+
+            <button 
+                *ngIf="authUser.role != userLevelEnum.STAFF"
+                mat-raised-button 
+                color="accent"
+                [disabled]="bookingForm.invalid"
+                [loading]="loading"
+                (click)="submit($event)">
+                {{ editMode ? 'Update' : 'Save' }}
+            </button>
+
+            <button 
+                mat-raised-button 
+                color="warn"
+                (click)="matDialogRef.close()">
+                Close
+            </button>
+        </div>
+        
+    </div>
+</div>

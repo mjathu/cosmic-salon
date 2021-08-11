@@ -1,5 +1,8 @@
 <?php
 
+use App\Enums\AppConst;
+use App\Enums\ErrorType;
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
@@ -47,6 +50,18 @@ class Helpers
         return config('app.url').'/reset-password?token='.$token.'&email='.$email;
     }
 
+    public static function calculateEndTime(int $startTime, array $serviceIds)
+    {
 
+        $serviceDuration = Service::whereIn('id', $serviceIds)->pluck('duration')->sum();
+        $end = $startTime + $serviceDuration;
+
+        if ($end <= AppConst::END_TIME && $startTime >= AppConst::START_TIME) {
+            return $end;
+        } else {
+            throw new Exception('Please select time between shop opening (8:00 AM) or closing (6:00 PM) time', ErrorType::CustomError);
+        }
+
+    }
 
 }

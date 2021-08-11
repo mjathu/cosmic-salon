@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Service extends Model
+class Booking extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -17,13 +17,13 @@ class Service extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'description',
+        'customer_id',
+        'staff_id',
+        'date',
+        'start_time',
+        'end_time',
         'price',
-        'duration',
-        'archived',
-        'active',
-        'deleted_at'
+        'status'
     ];
 
     protected $dates = ['deleted_at'];
@@ -41,15 +41,12 @@ class Service extends Model
         'id'
     ];
 
-
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
-        'active' => 'boolean',
-        'archived' => 'boolean',
         'price' => 'double'
     ];
 
@@ -58,22 +55,21 @@ class Service extends Model
         return (!is_null($this->attributes['id'])) ? Helpers::encodeId($this->attributes['id']) : $this->attributes['id'];
     }
 
-    /**
-     * Scope a query to only include active users.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('active', true);
-    }
-
     /*--------------------------- Relationships -----------------------------------*/
 
-    public function bookings()
+    public function customer()
     {
-        return $this->belongsToMany(Booking::class)->withTimestamps();
+        return $this->belongsTo(User::class, 'customer_id')->withTrashed();
+    }
+
+    public function staff()
+    {
+        return $this->belongsTo(User::class, 'staff_id')->withTrashed();
+    }
+
+    public function services()
+    {
+        return $this->belongsToMany(Service::class)->withTimestamps();
     }
 
 }

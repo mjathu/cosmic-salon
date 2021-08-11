@@ -1,0 +1,49 @@
+<div class="header p-24 pt-32" style="padding-top: 32px !important;">
+    <span class="title">Filters</span>
+</div>
+
+<div class="content p-24 pt-0">
+
+    <form fxLayout="column" fxFlex [formGroup]="filterForm">
+
+        <mat-form-field appearance="outline" *ngIf="filterForm.get('customer').enabled">
+
+            <mat-label>Customer</mat-label>
+
+            <mat-select formControlName="customer">
+                <mat-option *ngFor="let customer of customerList" [value]="customer.id">
+                    {{ customer.fullName }}
+                </mat-option>
+            </mat-select>
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngIf="filterForm.get('staff').enabled">
+
+            <mat-label>Staff</mat-label>
+
+            <mat-select formControlName="staff">
+                <mat-option *ngFor="let staff of staffList" [value]="staff.id">
+                    {{ staff.fullName }}
+                </mat-option>
+            </mat-select>
+
+        </mat-form-field>
+
+        <div fxLayout="column">
+    
+            <button mat-raised-button class="my-8" color="primary" (click)="submit($event)" [disabled]="disableReset() || loading">
+                <mat-icon>filter_list</mat-icon>
+                Filter
+            </button>
+    
+            <button mat-raised-button class="my-8" color="accent" *ngIf="filterForm.value" (click)="reset($event)" [disabled]="disableReset() || loading">
+                <mat-icon>sync</mat-icon>
+                Reset
+            </button>
+    
+        </div>
+
+    </form>
+
+</div>

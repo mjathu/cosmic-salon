@@ -1,0 +1,87 @@
+@import "src/@fuse/scss/fuse";
+@import "node_modules/angular-calendar/scss/angular-calendar";
+
+#booking {
+
+    .cal-week-view {
+    
+        .cal-header > b {
+            font-weight: 600;
+        }
+    
+        .cal-event {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+    
+            mwl-calendar-event-title {
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                flex: 1;
+                order: 0;
+    
+                .cal-event-title {
+                    display: block;
+                    line-height: 1;
+                    text-decoration: none;
+                }
+            }
+    
+            mwl-calendar-event-actions {
+                order: 1;
+    
+                .cal-event-actions {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+    
+                    .cal-event-action {
+                        display: block;
+                        line-height: 1;
+                        padding: 8px;
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    .status-box-wrapper {
+
+        border-radius: 8px;
+        background-color: white;
+
+        .dot {
+            height: 15px;
+            width: 15px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+    
+            &.booked {
+                background-color: #D1E8FF;
+            }
+    
+            &.completed {
+                background-color: #c4eab6;
+            }
+    
+            &.noshow {
+                background-color: #f5e2bb;
+            }
+    
+            &.cancelled {
+                background-color: #fbbaba;
+            }
+    
+            &.unvailable {
+                background-color: #d2d2d2;
+            }
+        }
+    
+
+    }
+
+}

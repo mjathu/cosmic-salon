@@ -15,6 +15,15 @@
             
         </div>
 
+        <div>
+
+            <button mat-raised-button color="accent" [disabled]="tableLoading" (click)="reloadTable($event)">
+                <mat-icon>sync</mat-icon>
+                Refresh
+            </button>
+
+        </div>
+
     </div>
 
     <div fusePerfectScrollbar>

@@ -6,10 +6,12 @@ use App\Enums\ResponseCode;
 use App\Exceptions\ApiException;
 use App\Http\Resources\ServiceResourceCollection;
 use App\Models\Service;
+use App\Models\User;
 use Exception;
 use Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use ResponseHelper;
 
@@ -22,6 +24,10 @@ class ServiceController extends Controller
         try {
 
             $serviceList = Service::orderBy('id', 'desc')->get();
+
+            $staff = User::Staff()->inRandomOrder()->limit(5)->get();
+
+            Log::info($staff->random(1)->first()->id);
 
             return response()->json(ResponseHelper::buildJsonResponse(
                 ResponseCode::CODE_200,

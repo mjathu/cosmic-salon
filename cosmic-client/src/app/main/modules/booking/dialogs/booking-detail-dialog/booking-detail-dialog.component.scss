@@ -1,0 +1,72 @@
+@import "src/@fuse/scss/fuse";
+
+.booking-detail-dialog {
+    
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+    
+    @include media-breakpoint('gt-xs') {
+        width: 520px;
+    }
+    
+    .mat-dialog-container {
+        padding: 0;
+
+        form {
+
+            width: 100%;
+            text-align: left;
+    
+            input[type="number"]::-webkit-inner-spin-button,
+            input[type="number"]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+        }
+
+        .icon-wrapper {
+
+            position: absolute;
+            right: 25%;
+            top: 25%;
+
+            .mat-icon {
+
+                height: auto;
+                width: auto;
+                opacity: 0.5;
+                font-size: 120px;
+
+            }
+
+        }
+
+        .detail-view-wrapper {
+
+            .dl-group {
+
+                .key {
+                    font-weight: bold;
+                    font-size: 16px;
+                }
+
+                .val {
+                    font-size: 14px;
+                }
+
+            }
+
+        }
+    
+    }
+    
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+
+}

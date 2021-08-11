@@ -116,4 +116,12 @@ export class CustomerComponent implements OnInit, OnDestroy {
 
     }
 
+    reloadTable(event: MouseEvent): void {
+        
+        event.preventDefault();
+
+        this._customerService.listCustomers().subscribe();
+        
+    }
+
 }

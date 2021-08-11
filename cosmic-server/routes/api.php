@@ -4,6 +4,7 @@ use App\Enums\ErrorType;
 use App\Enums\ResponseCode;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentMethodController;
@@ -56,6 +57,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/payment-method-store', [PaymentMethodController::class, 'store']);
     Route::post('/payment-method-update', [PaymentMethodController::class, 'update']);
     Route::post('/payment-method-delete', [PaymentMethodController::class, 'delete']);
+
+    // Booking Routes
+    Route::get('/booking-list', [BookingController::class, 'list']);
+    Route::post('/booking-store', [BookingController::class, 'store']);
+    Route::post('/booking-update', [BookingController::class, 'update']);
+    Route::post('/booking-change-status', [BookingController::class, 'changeStatus']);
+    Route::post('/booking-delete', [BookingController::class, 'delete']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 

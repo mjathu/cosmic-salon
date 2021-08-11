@@ -1,0 +1,165 @@
+<div id="booking" class="page-layout simple inner-scroll">
+
+    <div 
+        class="header primary-400 p-16 p-sm-24" 
+        fxLayout="column" 
+        fxLayoutAlign="start" 
+        fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <div fxLayout="row" fxLayoutAlign="space-between">
+
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center"
+                [@animate]="{value:'*',params:{delay:'100ms',y:'-25px'}}">
+                <mat-icon class="logo-icon mr-16">today</mat-icon>
+                <span class="logo-text h1">
+                    Booking Management
+                </span>
+            </div>
+            
+        </div>
+
+        <div>
+
+            <button mat-raised-button color="accent" class="mr-12" [disabled]="calenderLoading" (click)="reloadTable($event)">
+                <mat-icon>sync</mat-icon>
+                Refresh
+            </button>
+
+            <button mat-raised-button color="accent" [loading]="calenderLoading" (click)="openAddEditDialog($event)" *ngIf="showNewButton">
+                <mat-icon>add</mat-icon>
+                New Booking
+            </button>
+        </div>
+
+    </div>
+
+    <div class="primary-100 p-24 font-size-24" fxLayout="row" fxLayoutAlign="space-between end" [@animate]="{value:'*',params:{delay:'150ms'}}">
+
+        <div>
+
+            <button mat-raised-button color="default" (click)="openSideBar($event)">
+                <mat-icon>filter_list</mat-icon>
+                Filter
+            </button>
+
+        </div>
+
+        <div>
+            
+            <div fxLayout="row" fxLayoutAlign="center center" >
+            
+                <button mat-icon-button class="arrow" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                    (viewDateChange)="dateChange($event)" aria-label="Previous">
+                    <mat-icon>chevron_left</mat-icon>
+                </button>
+            
+                <div class="title">
+                    {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}
+                </div>
+            
+                <button mat-icon-button class="arrow" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+                    (viewDateChange)="dateChange($event)" aria-label="Next">
+                    <mat-icon>chevron_right</mat-icon>
+                </button>
+            </div>
+
+            <div fxLayout="row" class="font-size-12 status-box-wrapper p-12 mt-8" fxLayoutAlign="center center">
+    
+                <div class="mx-8" fxLayout="row" fxLayoutAlign="center center">
+                    <span class="dot mr-8 booked"></span>
+                    <span>Booked</span>
+                </div>
+    
+                <div class="mx-8" fxLayout="row" fxLayoutAlign="center center">
+                    <span class="dot mr-8 noshow"></span>
+                    <span>No Show</span>
+                </div>
+    
+                <div class="mx-8" fxLayout="row" fxLayoutAlign="center center">
+                    <span class="dot mr-8 cancelled"></span>
+                    <span>Cancelled</span>
+                </div>
+    
+                <div class="mx-8" fxLayout="row" fxLayoutAlign="center center">
+                    <span class="dot mr-8 completed"></span>
+                    <span>Completed</span>
+                </div>
+    
+                <div class="mx-8" fxLayout="row" fxLayoutAlign="center center">
+                    <span class="dot mr-8 unavailable"></span>
+                    <span>Unavailable</span>
+                </div>
+    
+            </div>
+
+        </div>
+
+        <div>
+
+            <ng-container *ngIf="filterBy.length > 0">
+
+                <div class="mb-8 text-center font-size-14">
+                    Active Filters
+                </div>
+    
+                <mat-chip-list>
+                    <mat-chip color="primary" selected *ngFor="let name of filterBy">{{ name | titlecase }}</mat-chip>
+                </mat-chip-list>
+
+            </ng-container>
+
+        </div>
+
+
+    </div>
+
+    <fuse-sidebar class="sidebar" name="booking-filter" position="left">
+
+        <app-booking-filter-sidebar 
+            [@animate]="{ value:'*', params:{ delay: '200ms', x:'-15px' } }" 
+            fusePerfectScrollbar
+            [fusePerfectScrollbarOptions]="{ suppressScrollX: true }">
+        </app-booking-filter-sidebar>
+
+    </fuse-sidebar>
+
+    <div class="content p-24" fusePerfectScrollbar [@animate]="{value:'*',params:{delay:'200ms',y:'50px'}}">
+
+        <div [ngSwitch]="view">
+
+            <!-- (eventClicked)="editEvent('edit', $event.event)"
+                (eventTimesChanged)="eventTimesChanged($event)" -->
+            <mwl-calendar-week-view
+                *ngSwitchCase="'week'"
+                [viewDate]="viewDate"
+                [events]="events"
+                [refresh]="refresh"
+                [dayStartHour]="8"
+                [dayEndHour]="18"
+                [eventTitleTemplate]="titleTemplate"
+                (eventClicked)="handleEventClick($event.event)"
+                >
+            </mwl-calendar-week-view>
+
+            <ng-template #titleTemplate let-day="day" let-week="week" let-event="event"  let-locale="locale">
+
+                <ng-container *ngIf="!event.blocked">
+                    
+                    <p class="m-0 mb-4 text-truncate line-height-14">
+                        Customer: {{ event?.meta?.booking?.customer?.fullName  }}
+                    </p>
+    
+                    <p class="m-0 text-truncate line-height-14">
+                        Staff: {{ event?.meta?.booking?.staff?.fullName  }}
+                    </p>
+
+                </ng-container>
+
+            </ng-template>
+
+        </div>
+
+    </div>
+
+</div>
