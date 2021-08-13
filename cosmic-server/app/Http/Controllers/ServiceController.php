@@ -23,11 +23,9 @@ class ServiceController extends Controller
 
         try {
 
-            $serviceList = Service::orderBy('id', 'desc')->get();
-
-            $staff = User::Staff()->inRandomOrder()->limit(5)->get();
-
-            Log::info($staff->random(1)->first()->id);
+            $serviceList = Service::when(!$request->input('with_archive'), function($query) {
+                return $query->where('archived', '=', false);
+            })->orderBy('id', 'desc')->get();
 
             return response()->json(ResponseHelper::buildJsonResponse(
                 ResponseCode::CODE_200,
@@ -106,7 +104,19 @@ class ServiceController extends Controller
         
             $decId = Helpers::decodeId($request->input('id'));
 
-            $service = Service::findOrFail($decId);
+            $existingService = Service::with(['bookings'])->findOrFail($decId);
+
+            if (count($existingService->bookings) > 0) {
+
+                $existingService->archived = true;
+                $existingService->save();
+
+                $service = new Service();
+
+            } else {
+                $service = Service::findOrFail($decId);
+            }
+
             $service->name = $request->input('name');
             $service->description = $request->input('description');
             $service->duration = $request->input('duration');

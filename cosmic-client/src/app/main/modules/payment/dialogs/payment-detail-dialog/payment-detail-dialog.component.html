@@ -1,0 +1,161 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="primary-400 m-0">
+
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+
+            <span class="title dialog-title">Payment Detail</span>
+
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+
+        </mat-toolbar-row>
+
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{ suppressScrollX: true }">
+
+        <div class="card">
+
+            <div class="header" fxLayout="row" fxLayoutAlign="space-between start">
+
+                <div class="ids" fxLayout="column">
+
+                    <div fxLayout="row" class="seller" fxLayoutAlign="start center">
+
+                        <div class="logo">
+                            <img src="assets/images/logos/logo.jpg">
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="detail">
+                            <div class="title">Cosmic Salon</div>
+                            <div class="address">
+                                2810 Stanford Road, Arthur Square 07016
+                            </div>
+                            <div class="phone">
+                                <span>Phone:</span>
+                                +94 112 744225
+                            </div>
+                            <div class="email">
+                                <span>Email:</span>
+                                info@cosmic.com
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <div class="payment-title">
+                        Booking Payment Receipt
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        
+                        <div></div>
+
+                        <table class="summary">
+                            <tr>
+                                <td class="label">CUSTMOER NAME</td>
+                                <td class="value">{{ payment.customer.fullName | uppercase }}</td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">STAFF NAME</td>
+                                <td class="value">{{ payment.booking.staff.fullName | uppercase }}</td>
+                            </tr>
+        
+                            <tr>
+                                <td class="label">BOOKING DATE</td>
+                                <td class="value">{{ payment.booking.date | date:'mediumDate' }}</td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">TIME</td>
+                                <td class="value">{{ getTime() }}</td>
+                            </tr>
+
+                            <tr>
+                                <td class="label">PAYMENT DATE</td>
+                                <td class="value">{{ payment.date | date:'mediumDate'}}</td>
+                            </tr>
+        
+                        </table>
+
+                    </div>
+
+                </div>
+                
+            </div>
+
+            <div class="content">
+                <table class="simple invoice-table">
+                    <thead>
+                        <tr>
+                            <th>SERVICE NAME</th>
+                            <th class="text-right">PRICE</th>
+                            <th class="text-right">DURATION</th>
+                            <th class="text-right">TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let service of payment.booking.services">
+                            <td>
+                                <div class="title">{{ service.name | uppercase }}</div>
+                            </td>
+                            <td class="text-right">
+                                {{ service.price | currency }}
+                            </td>
+                            <td class="text-right">
+                                {{ service.duration }} MINUTES
+                            </td>
+                            <td class="text-right">
+                                {{ service.price | currency }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="simple invoice-table-footer">
+                    <tbody>
+                        <tr class="subtotal">
+                            <td>SUBTOTAL</td>
+                            <td>{{ payment.price | currency }}</td>
+                        </tr>
+                        <tr class="discount">
+                            <td>PAYMENT METHOD</td>
+                            <td>{{ getPaymentMethod() }}</td>
+                        </tr>
+                        <tr class="total">
+                            <td>TOTAL</td>
+                            <td>{{ payment.price | currency }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div></div>
+        
+        <div>
+
+            <button 
+                mat-raised-button 
+                color="warn"
+                (click)="matDialogRef.close()">
+                Close
+            </button>
+        
+        </div>
+        
+    </div>
+</div>

@@ -102,4 +102,7 @@ export class BookingDetailDialogComponent implements OnInit, OnDestroy {
 
     }
 
+    getDesc(status: string): string {
+        return this._bookingService.getStatusDescription(status);
+    }
 }

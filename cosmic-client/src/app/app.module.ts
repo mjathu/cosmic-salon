@@ -54,6 +54,10 @@ const appRoutes: Routes = [
         loadChildren: () => import('./main/modules/booking/booking.module').then((m) => m.BookingModule)
     },
     {
+        path: 'payments',
+        loadChildren: () => import('./main/modules/payment/payment.module').then((m) => m.PaymentModule)
+    },
+    {
         path      : '**',
         redirectTo: 'home'
     }

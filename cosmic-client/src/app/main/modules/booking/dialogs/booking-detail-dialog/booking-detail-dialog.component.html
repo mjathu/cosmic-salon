@@ -61,6 +61,11 @@
 
             </div>
 
+            <div class="dl-group m-0 mb-8">
+                <p class="key m-0 mb-4">Status</p>
+                <p class="val m-0 status" [ngClass]="booking.status">{{ getDesc(booking.status) }}</p>
+            </div>
+
         </div>
 
     </div>

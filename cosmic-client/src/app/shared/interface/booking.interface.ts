@@ -1,3 +1,4 @@
+import { Payment } from "./payment.interface";
 import { Service } from "./service.interface";
 import { User } from "./user.interface";
 
@@ -13,5 +14,6 @@ export interface Booking {
 
     customer?: User;
     staff?: User;
-    services?: Service[]
+    services?: Service[];
+    payment?: Payment;
 }

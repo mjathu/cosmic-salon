@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { UserLevel } from 'app/shared/enum/user-level.enum';
 import { Booking } from 'app/shared/interface/booking.interface';
@@ -18,6 +18,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { finalize, takeUntil } from 'rxjs/operators';
 import { NotificationType } from 'app/shared/enum/notification-type.enum';
 import { BookingStatus } from 'app/shared/enum/booking-status.enum';
+import { BookingChargeDialogComponent } from '../booking-charge-dialog/booking-charge-dialog.component';
 
 export const MY_FORMATS = {
     parse: {
@@ -66,6 +67,7 @@ export class AddEditBookingDialogComponent implements OnInit, OnDestroy {
     bookingStatusEnum: typeof BookingStatus = BookingStatus;
     userLevelEnum: typeof UserLevel = UserLevel;
     disableInputs: boolean;
+    dialogRef: any;
 
     constructor(
         public matDialogRef: MatDialogRef<AddEditBookingDialogComponent>,
@@ -74,7 +76,8 @@ export class AddEditBookingDialogComponent implements OnInit, OnDestroy {
         private _notificationService: NotificationService,
         private _commonService: CommonService,
         private _bookingService: BookingService,
-        private _authService: AuthService
+        private _authService: AuthService,
+        public _matDialog: MatDialog,
     ) {
 
         this._unsubscribeAll = new Subject();
@@ -262,6 +265,29 @@ export class AddEditBookingDialogComponent implements OnInit, OnDestroy {
 
         if (status === this.bookingStatusEnum.COMPLETED) {
 
+            this.dialogRef = this._matDialog.open(BookingChargeDialogComponent, {
+                panelClass: 'booking-charge-dialog',
+                closeOnNavigation: true,
+                disableClose: true,
+                autoFocus: false,
+                data: {
+                    booking: this.booking
+                }
+            });
+
+            this.dialogRef
+                .afterClosed()
+                .subscribe((message: string) => {
+
+                    if (!message) {
+                        return;
+                    }
+
+                    setTimeout(() => {
+                        this.matDialogRef.close();
+                    }, 200);
+
+                });
             
 
         } else {

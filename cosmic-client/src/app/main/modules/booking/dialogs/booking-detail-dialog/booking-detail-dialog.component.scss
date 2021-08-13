@@ -54,6 +54,37 @@
 
                 .val {
                     font-size: 14px;
+
+                    &.status {
+                        display: inline;
+                        padding: 4px;
+                        border-radius: 4px;
+                    }
+
+                    &.booked {
+                        background-color: #D1E8FF;
+                        border: 1px solid #1e90ff;
+                        color: #1e90ff;
+                    }
+            
+                    &.completed {
+                        background-color: #c4eab6;
+                        border: 1px solid #4db304;
+                        color: #4fbe00;
+                    }
+            
+                    &.noshow {
+                        background-color: #f5e2bb;
+                        border: 1px solid #da9413;
+                        color: #db930c;
+                    }
+            
+                    &.cancelled {
+                        background-color: #fbbaba;
+                        border: 1px solid #ff1e31;
+                        color: #ff1e31;
+                    }
+            
                 }
 
             }

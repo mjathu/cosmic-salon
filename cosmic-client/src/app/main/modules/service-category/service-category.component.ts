@@ -56,14 +56,6 @@ export class ServiceCategoryComponent implements OnInit, OnDestroy {
                 this.tableLoading = value;
             });
 
-        this._serviceCategoryService.listServices().subscribe();
-
-    }
-
-    ngAfterViewInit(): void {
-
-        this.dataSource.paginator = this.paginator;
-
         this._serviceCategoryService
             .onServiceDataChanged
             .pipe(takeUntil(this._unsubscribeAll))
@@ -73,6 +65,14 @@ export class ServiceCategoryComponent implements OnInit, OnDestroy {
                 this.dataSource.data = this.serviceList;
 
             });
+
+        this._serviceCategoryService.listServices().subscribe();
+
+    }
+
+    ngAfterViewInit(): void {
+
+        this.dataSource.paginator = this.paginator;
 
     }
 

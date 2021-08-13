@@ -145,15 +145,30 @@
 
         <div>
 
-            <button mat-raised-button color="primary" class="mr-8" [matMenuTriggerFor]="menu" [disabled]="loading" *ngIf="authUser.role !== userLevelEnum.CUSTOMER">
+            <button 
+                mat-raised-button 
+                color="primary" 
+                class="mr-8" 
+                [matMenuTriggerFor]="menu" 
+                [disabled]="loading" 
+                *ngIf="authUser.role !== userLevelEnum.CUSTOMER">
                 Mark As
                 <mat-icon>expand_more</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="changeStatus($event, bookingStatusEnum.COMPLETED)">Complete</button>
                 <button mat-menu-item (click)="changeStatus($event, bookingStatusEnum.NOSHOW)">No Show</button>
-                <button mat-menu-item (click)="changeStatus($event, bookingStatusEnum.CANCELLED)">Cancelled</button>
+                <button mat-menu-item *ngIf="authUser.role !== userLevelEnum.STAFF" (click)="changeStatus($event, bookingStatusEnum.CANCELLED)">Cancelled</button>
             </mat-menu>
+
+            <button 
+                *ngIf="authUser.role === userLevelEnum.CUSTOMER"
+                mat-raised-button 
+                color="warn"
+                [loading]="loading"
+                (click)="changeStatus($event, bookingStatusEnum.CANCELLED)">
+                Cancel Booking
+            </button>
 
         </div>
         

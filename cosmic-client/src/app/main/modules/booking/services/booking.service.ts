@@ -11,6 +11,7 @@ import { CommonService } from 'app/shared/services/common-service.service';
 import { AuthService } from 'app/shared/services/auth.service';
 import * as  moment from 'moment';
 import { DAYS_OF_WEEK } from 'angular-calendar';
+import { BookingStatus } from 'app/shared/enum/booking-status.enum';
 
 moment.updateLocale('en', {
     week: {
@@ -168,6 +169,31 @@ export class BookingService {
 
             });
 
+
+    }
+
+    getStatusDescription(statusEnum: string): string {
+
+        let desc = '';
+
+        switch (statusEnum) {
+            case BookingStatus.BOOKED:
+                desc = 'Booked';
+                break;
+            case BookingStatus.NOSHOW:
+                desc = 'No Show';
+                break;
+            case BookingStatus.CANCELLED:
+                desc = 'Cancelled';
+                break;
+            case BookingStatus.COMPLETED:
+                desc = 'Completed';
+                break;
+            default:
+                break;
+        };
+
+        return desc;
 
     }
 

@@ -1,5 +1,6 @@
 import { UserLevel } from "../enum/user-level.enum";
 import { PaymentMethod } from "./payment-method.interface";
+import { Payment } from "./payment.interface";
 
 export interface User {
     id: string;
@@ -16,6 +17,7 @@ export interface User {
     rememberToken: string;
 
     token?: string;
-    paymentMethods?: PaymentMethod[],
-    defaultPaymentMethod?: PaymentMethod
+    paymentMethods?: PaymentMethod[];
+    defaultPaymentMethod?: PaymentMethod;
+    payments: Payment[];
 }

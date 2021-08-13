@@ -130,4 +130,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(PaymentMethod::class, 'user_id')->where('default', '=', true)->latest();
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'customer_id')->withTrashed();
+    }
 }

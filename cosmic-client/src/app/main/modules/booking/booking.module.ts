@@ -31,6 +31,7 @@ import { BookingFilterSidebarComponent } from './sidebar/booking-filter-sidebar/
 import { MatSelectModule } from '@angular/material/select';
 import {MatChipsModule} from '@angular/material/chips';
 import { BookingDetailDialogComponent } from './dialogs/booking-detail-dialog/booking-detail-dialog.component';
+import { BookingChargeDialogComponent } from './dialogs/booking-charge-dialog/booking-charge-dialog.component';
 
 const routes: Routes = [
     {
@@ -50,7 +51,8 @@ export function momentAdapterFactory() {
         BookingComponent,
         AddEditBookingDialogComponent,
         BookingFilterSidebarComponent,
-        BookingDetailDialogComponent
+        BookingDetailDialogComponent,
+        BookingChargeDialogComponent
     ],
     imports: [
         RouterModule.forChild(routes),

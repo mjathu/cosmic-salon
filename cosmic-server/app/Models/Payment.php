@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Booking extends Model
+class Payment extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -17,13 +17,13 @@ class Booking extends Model
      * @var array
      */
     protected $fillable = [
+        'booking_id',
         'customer_id',
-        'staff_id',
+        'payment_method_id',
         'date',
-        'start_time',
-        'end_time',
-        'price',
-        'status'
+        'payment_reference',
+        'transaction_reference',
+        'price'
     ];
 
     protected $dates = ['deleted_at'];
@@ -62,19 +62,13 @@ class Booking extends Model
         return $this->belongsTo(User::class, 'customer_id')->withTrashed();
     }
 
-    public function staff()
+    public function booking()
     {
-        return $this->belongsTo(User::class, 'staff_id')->withTrashed();
+        return $this->belongsTo(Booking::class, 'booking_id')->withTrashed();
     }
 
-    public function services()
+    public function paymentMethod()
     {
-        return $this->belongsToMany(Service::class)->withTimestamps();
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id')->withTrashed();
     }
-
-    public function payment()
-    {
-        return $this->hasOne(Payment::class, 'booking_id')->withTrashed();
-    }
-
 }

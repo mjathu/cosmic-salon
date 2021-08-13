@@ -102,7 +102,7 @@ export class BookingFilterSidebarComponent implements OnInit, OnDestroy {
     }
 
     disableReset(): boolean {
-        return _.isEqual(this.filterDefault, this.filterForm.value);
+        return _.isEqual(this.filterDefault, {...{staff: null, customer: null}, ...this.filterForm.value});
     }
 
     reset(event: MouseEvent): void {

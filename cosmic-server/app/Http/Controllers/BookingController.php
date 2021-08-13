@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enums\BookingStatus;
+use App\Enums\ChargeMethod;
 use App\Enums\ErrorType;
 use App\Enums\ResponseCode;
 use App\Enums\RoleType;
 use App\Exceptions\ApiException;
 use App\Http\Resources\BookingResourceCollection;
 use App\Models\Booking;
+use App\Models\Payment;
 use App\Models\Service;
 use Carbon\Carbon;
 use Exception;
@@ -16,12 +18,21 @@ use Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use ResponseHelper;
+use \Stripe\StripeClient;
 
 class BookingController extends Controller
 {
+
+    private $stripeClient;
+
+    public function __construct(StripeClient $stripeClient)
+    {
+        $this->stripeClient = $stripeClient;
+    }
 
     public function list(Request $request)
     {
@@ -33,7 +44,7 @@ class BookingController extends Controller
 
             $user = $request->user();
 
-            $bookings = Booking::with(['customer', 'staff', 'services'])
+            $bookings = Booking::with(['customer.defaultPaymentMethod', 'staff', 'services'])
                 ->when($dateFilter, function($query) use($dateFilter) {
                     return $query
                         ->where('date', '>=', $dateFilter->startDate)
@@ -224,8 +235,6 @@ class BookingController extends Controller
 
                 })->get();
 
-            Log::info($overlapBookings);
-
             if (count($overlapBookings) > 0) {
                 throw new Exception('This staff or customer has another booking on this date at this time slot range. Please choose different time', ErrorType::CustomError);
             }
@@ -275,19 +284,51 @@ class BookingController extends Controller
 
             $validated = $request->validate([
                 'id' => 'required',
-                'status' => 'required'
+                'status' => 'required',
+                'method' => Rule::requiredIf($request->input('status') === BookingStatus::COMPLETED),
+                'reference' => Rule::requiredIf($request->has('method') && $request->input('method') === ChargeMethod::MANUAL)
             ]);
-
-            if ($user->isCustomer()) {
-                throw new Exception('Not allowed', ErrorType::CustomError);
-            }
         
             $decId = Helpers::decodeId($request->input('id'));
             $status = $request->input('status');
 
-            $booking = Booking::findOrFail($decId);
+            $booking = Booking::with(['customer.defaultPaymentMethod'])->findOrFail($decId);
             $booking->status = $status;
             $booking->save();
+
+            if ($status === BookingStatus::COMPLETED) {
+
+                $payment = new Payment();
+                $payment->booking_id = $booking->id;
+                $payment->customer_id = $booking->customer_id;
+                $payment->date = Carbon::now();
+                $payment->price = $booking->price;
+                
+                if ($request->input('method') === ChargeMethod::AUTO) {
+                    
+                    $paymentMethod = $booking->customer->defaultPaymentMethod;
+
+                    $paymentResult = $this->stripeClient->charges->create([
+                        'amount' => ($booking->price * 100), // In cents
+                        'currency' => 'usd',
+                        'customer' => $booking->customer->stripe_customer_id
+                    ]);
+                    
+                    $payment->payment_method_id = $paymentMethod->id;
+                    $payment->transaction_reference = $paymentResult->id;
+                    $payment->payment_reference = $paymentResult->balance_transaction;
+
+                } else {
+                    
+                    $payment->payment_method_id = null;
+                    $payment->transaction_reference = Str::uuid();
+                    $payment->payment_reference = $request->input('reference');
+                    
+                }
+                
+                $payment->save();
+
+            }
 
             DB::commit();
 

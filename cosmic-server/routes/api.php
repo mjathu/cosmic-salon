@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
@@ -64,6 +65,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/booking-update', [BookingController::class, 'update']);
     Route::post('/booking-change-status', [BookingController::class, 'changeStatus']);
     Route::post('/booking-delete', [BookingController::class, 'delete']);
+
+    // Payment Routes
+    Route::get('/payment-list', [PaymentController::class, 'list']);
+
 
     Route::post('/logout', [AuthController::class, 'logout']);
 

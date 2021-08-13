@@ -1,0 +1,90 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="primary-400 m-0">
+
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+
+            <span class="title dialog-title">Booking Payment</span>
+
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+
+        </mat-toolbar-row>
+
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{ suppressScrollX: true }">
+
+        <form 
+            name="paymentForm" 
+            [formGroup]="paymentForm" 
+            fxLayout="row wrap" 
+            fxLayoutGap="16px"
+            fxLayout.lt-sm="column"
+            fxLayoutAlign="flex-start">
+
+            <mat-form-field appearance="outline" fxFlex="100%">
+
+                <mat-label>Select Payment Method</mat-label>
+
+                <mat-select formControlName="method" required>
+                    <mat-option [value]="chargeMethodEnum.AUTO" *ngIf="booking.customer?.defaultPaymentMethod || false">Default Payment Method {{ getCard() }}</mat-option>
+                    <mat-option [value]="chargeMethodEnum.MANUAL">Manual Payment By Cash</mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="paymentForm.get('method').hasError('required')">
+                    Payment method is required
+                </mat-error>
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="100%" *ngIf="paymentForm.get('reference').enabled">
+
+                <mat-label>Reference</mat-label>
+
+                <input type="text" formControlName="reference" matInput required>
+
+                <mat-error *ngIf="paymentForm.get('reference').hasError('required')">
+                    Reference is required
+                </mat-error>
+
+
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="100%">
+
+                <mat-label>Amount</mat-label>
+
+                <input type="number" formControlName="amount" matInput>
+
+            </mat-form-field>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div></div>
+        
+        <div>
+            <button 
+                mat-raised-button 
+                color="accent"
+                [disabled]="paymentForm.invalid"
+                [loading]="loading"
+                (click)="submit($event)">
+                Save
+            </button>
+
+            <button 
+                mat-raised-button 
+                color="warn"
+                (click)="matDialogRef.close()">
+                Close
+            </button>
+        </div>
+        
+    </div>
+</div>

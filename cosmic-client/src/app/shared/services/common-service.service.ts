@@ -102,6 +102,13 @@ export class CommonService {
                     type     : 'item',
                     icon     : 'today',
                     url      : '/booking'
+                },
+                {
+                    id       : 'payments',
+                    title    : 'Payments',
+                    type     : 'item',
+                    icon     : 'attach_money',
+                    url      : '/payments'
                 }
             ];
 
@@ -147,6 +154,13 @@ export class CommonService {
                     type     : 'item',
                     icon     : 'credit_card',
                     url      : '/payment-method'
+                },
+                {
+                    id       : 'payments',
+                    title    : 'Payments',
+                    type     : 'item',
+                    icon     : 'attach_money',
+                    url      : '/payments'
                 }
             ];
 
