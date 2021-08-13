@@ -1,0 +1,17 @@
+@import "src/@fuse/scss/fuse";
+
+:host {
+
+    .mat-column-buttons {
+        max-width: 100px;
+    }
+
+    .report-container {
+
+        background: white;
+        border-radius: 8px;
+        min-height: 640px;
+
+    }
+
+}

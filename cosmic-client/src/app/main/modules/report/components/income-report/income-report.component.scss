@@ -1,0 +1,16 @@
+@import "src/@fuse/scss/fuse";
+
+:host {
+
+    .mat-column-date {
+        max-width: 100px;
+    }
+
+    .mat-column-price {
+        max-width: 100px;
+    }
+
+    .mat-column-paymentReference {
+        word-break: break-word;
+    }
+}

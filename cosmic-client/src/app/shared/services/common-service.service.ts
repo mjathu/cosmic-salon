@@ -12,6 +12,7 @@ import { UserLevel } from '../enum/user-level.enum';
 import { User } from '../interface/user.interface';
 import { Booking } from '../interface/booking.interface';
 import * as moment from 'moment';
+import { ReportTypes } from '../enum/report-type.enum';
 
 @Injectable({
     providedIn: 'root'
@@ -109,6 +110,13 @@ export class CommonService {
                     type     : 'item',
                     icon     : 'attach_money',
                     url      : '/payments'
+                },
+                {
+                    id       : 'reports',
+                    title    : 'Reports',
+                    type     : 'item',
+                    icon     : 'description',
+                    url      : '/reports'
                 }
             ];
 
@@ -205,6 +213,29 @@ export class CommonService {
 
     dbFormatDate(date: any): string {
         return moment(date).format('YYYY-MM-DD');
+    }
+
+    getReportTypes(): {name: string, value: string}[] {
+
+        let types = [
+            {
+                name: 'Income Report',
+                value: ReportTypes.INCOME_REPORT
+            },
+            {
+                name: 'Booking Report',
+                value: ReportTypes.BOOKING_REPORT
+            }
+        ];
+
+        if (this._authService.currentUserValue.role === UserLevel.CUSTOMER) {
+
+            types = types.filter((val) => val.value === ReportTypes.BOOKING_REPORT);
+
+        }
+        
+        return types;
+
     }
 
 }

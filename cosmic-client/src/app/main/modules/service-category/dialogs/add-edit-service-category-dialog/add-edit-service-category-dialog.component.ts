@@ -73,7 +73,7 @@ export class AddEditServiceCategoryDialogComponent implements OnInit, OnDestroy 
             name: new FormControl(null, [Validators.required]),
             description: new FormControl(null, [Validators.required]),
             price: new FormControl(null, [Validators.required, Validators.min(10)]),
-            duration: new FormControl(null, [Validators.required, Validators.min(10)]),
+            duration: new FormControl(null, [Validators.required, Validators.min(15)]),
             active: new FormControl(false)
         });
 

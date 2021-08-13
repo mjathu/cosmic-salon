@@ -1,0 +1,188 @@
+
+<div>
+
+    <form name="reportForm" [formGroup]="reportForm" fxLayout="row wrap" fxLayoutGap="16px" fxLayout.lt-sm="column"
+        fxLayoutAlign="flex-start">
+    
+        <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+    
+            <mat-label>Start Date</mat-label>
+
+            <input matInput [matDatepicker]="picker1" formControlName="start_date" required>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+
+            <mat-error *ngIf="reportForm.get('start_date').hasError('required')">
+                Start date is required
+            </mat-error>
+    
+        </mat-form-field>
+    
+        <mat-form-field appearance="outline" fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+    
+            <mat-label>End Date</mat-label>
+
+            <input matInput [matDatepicker]="picker2" formControlName="end_date" required>
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+
+            <mat-error *ngIf="reportForm.get('end_date').hasError('required')">
+                End date is required
+            </mat-error>
+    
+    
+        </mat-form-field>
+
+        
+    
+    </form>
+
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div></div>
+
+        <div class="pr-16">
+
+            <button 
+                mat-raised-button 
+                color="accent"
+                class="mr-8"
+                (click)="submit($event, false)"
+                [disabled]="tableLoading || reportForm.invalid">
+                <mat-icon>visibility</mat-icon>
+                View
+            </button>
+
+            <button 
+                mat-raised-button 
+                color="accent"
+                (click)="submit($event, true)"
+                [disabled]="tableLoading || reportForm.invalid">
+                <mat-icon>arrow_downward</mat-icon>
+                Download
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="mt-24" fxLayout="column" fxLayoutAlign="center center">
+
+    <div class="w-100-p">
+
+        <mat-table #reportTable [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+    
+            <ng-container matColumnDef="customer">
+
+                <mat-header-cell *matHeaderCellDef>Customer</mat-header-cell>
+
+                <mat-cell *matCellDef="let data">
+
+                    <p class="text-truncate font-weight-600">{{ data.customer }}</p>
+
+                </mat-cell>
+
+            </ng-container>
+
+            <ng-container matColumnDef="staff">
+
+                <mat-header-cell *matHeaderCellDef>Staff</mat-header-cell>
+
+                <mat-cell *matCellDef="let data">
+
+                    <p class="email text-truncate">{{ data.staff }}</p>
+
+                </mat-cell>
+
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+
+                <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+
+                <mat-cell *matCellDef="let data">
+
+                    <p class="email text-truncate">{{ data.date }}</p>
+
+                </mat-cell>
+
+            </ng-container>
+
+            <ng-container matColumnDef="paymentMethod">
+
+                <mat-header-cell *matHeaderCellDef>Payment Method</mat-header-cell>
+
+                <mat-cell *matCellDef="let data">
+
+                    <p class="email text-truncate">{{ data.payment_method }}</p>
+
+                </mat-cell>
+
+            </ng-container>
+
+            <ng-container matColumnDef="paymentReference">
+
+                <mat-header-cell *matHeaderCellDef>Payment Reference</mat-header-cell>
+
+                <mat-cell *matCellDef="let data">
+
+                    <p class="services">{{ data.payment_reference | uppercase }}</p>
+
+                </mat-cell>
+
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+
+                <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+
+                <mat-cell *matCellDef="let data">
+
+                    <p class="email text-truncate">{{ data.price | currency }}</p>
+
+                </mat-cell>
+
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                [@animate]="{value:'*',params:{y:'100%'}}">
+
+            </mat-row>
+
+        </mat-table>
+
+        <ng-container>
+
+            <mat-paginator 
+                [pageSizeOptions]="[10, 20, 30]"
+                showFirstLastButtons>
+            </mat-paginator>
+        </ng-container>
+
+    </div>
+
+    <div fxFlex.gt-lg="1366px" fxFlex="80%" *ngIf="reportData.length === 0 && !tableLoading">
+
+        <div class="w-100-p">
+
+            <div class="p-40" fxLayout="column" fxLayoutAlign="center center">
+                
+                <div>
+                    <mat-icon class="font-size-72 primary-fg inline">info</mat-icon>
+                </div>
+    
+                <div>
+                    <h2 class="h2">No Data Found</h2>
+                </div>
+    
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

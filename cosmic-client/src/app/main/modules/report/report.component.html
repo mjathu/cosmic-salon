@@ -1,0 +1,62 @@
+<div id="customer" class="page-layout simple inner-scroll">
+
+    <div class="header primary-400 p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center">
+
+        <div fxLayout="row" fxLayoutAlign="space-between">
+
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center"
+                [@animate]="{value:'*',params:{delay:'100ms',y:'-25px'}}">
+                <mat-icon class="logo-icon mr-16">description</mat-icon>
+                <span class="logo-text h1">
+                    Reports
+                </span>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <div fusePerfectScrollbar>
+        
+        <div class="p-24" fxLayout="row wrap" fxLayoutAlign="center center">
+            
+            <div fxFlex.gt-lg="1366px" fxFlex="80%" class="report-container p-24 pl-40 mat-elevation-z4">
+                
+                <mat-progress-bar mode="query" *ngIf="tableLoading"></mat-progress-bar>
+                
+                <div>
+
+                    <mat-form-field appearance="outline" fxFlex="100%" class="pr-16">
+
+                        <mat-label>Report Type</mat-label>
+        
+                        <mat-select required [(ngModel)]="reportTypeInput">
+                            <mat-option *ngFor="let type of reportTypes" [value]="type.value">
+                                {{ type.name }}
+                            </mat-option>
+                        </mat-select>
+        
+                    </mat-form-field>
+
+                </div>
+
+                <div>
+
+                    <ng-container *ngIf="reportTypeInput === reportTypeEnum.BOOKING_REPORT">
+                        <app-booking-report [type]="reportTypeInput"></app-booking-report>
+                    </ng-container>
+
+                    <ng-container *ngIf="reportTypeInput === reportTypeEnum.INCOME_REPORT">
+                        <app-income-report [type]="reportTypeInput"></app-income-report>
+                    </ng-container>
+
+                </div>
+            
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

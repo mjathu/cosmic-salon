@@ -43,7 +43,8 @@
                             "crossvent",
                             "dom-plane",
                             "dom-set",
-                            "@mattlewis92/dom-autoscroller"
+                            "@mattlewis92/dom-autoscroller",
+                            "papaparse"
                         ]
                     },
                     "configurations": {

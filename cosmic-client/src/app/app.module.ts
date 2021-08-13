@@ -23,6 +23,7 @@ import { HttpErrorInterceptor } from './shared/interceptors/http-error.intercept
 import { AppErrorHandler } from './shared/error/error-handler';
 import { HttpAuthInterceptor } from './shared/interceptors/http-auth.interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UpperCasePipe } from '@angular/common';
 
 const appRoutes: Routes = [
     {
@@ -56,6 +57,10 @@ const appRoutes: Routes = [
     {
         path: 'payments',
         loadChildren: () => import('./main/modules/payment/payment.module').then((m) => m.PaymentModule)
+    },
+    {
+        path: 'reports',
+        loadChildren: () => import('./main/modules/report/report.module').then((m) => m.ReportModule)
     },
     {
         path      : '**',
@@ -121,6 +126,7 @@ const appRoutes: Routes = [
             useClass: HttpAuthInterceptor,
             multi: true
         },
+        UpperCasePipe
     ],
 })
 export class AppModule

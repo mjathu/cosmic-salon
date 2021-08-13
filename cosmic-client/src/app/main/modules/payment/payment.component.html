@@ -34,7 +34,7 @@
                 
                 <mat-progress-bar mode="query" *ngIf="tableLoading"></mat-progress-bar>
                 
-                <mat-table #paymentstable [dataSource]="dataSource" [@animateStagger]="{value:'50'}" *ngIf="paymentList.length > 0 || tableLoading">
+                <mat-table #paymentstable [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
     
                     <ng-container matColumnDef="customer">
     
@@ -66,7 +66,7 @@
     
                         <mat-cell *matCellDef="let payment" fxHide fxShow.gt-md>
     
-                            <p class="phone text-truncate">{{ payment.paymentReference }}</p>
+                            <p class="phone text-truncate">{{ payment.paymentReference | uppercase }}</p>
     
                         </mat-cell>
     

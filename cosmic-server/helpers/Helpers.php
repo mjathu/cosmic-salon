@@ -2,8 +2,10 @@
 
 use App\Enums\AppConst;
 use App\Enums\ErrorType;
+use App\Models\Booking;
 use App\Models\Service;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class Helpers 
@@ -64,4 +66,19 @@ class Helpers
 
     }
 
+    public static function convertMinToDateObj(int $minutes, string $date = null, $format = null)
+    {
+
+
+        $obj = $date ? Carbon::parse($date) : Carbon::now();
+
+        $obj->startOfDay()->addMinutes($minutes);
+
+        if ($format) {
+            return $obj->format($format);
+        } else {
+            return $obj;
+        }
+
+    }
 }

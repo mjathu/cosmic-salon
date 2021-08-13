@@ -9,6 +9,7 @@ use App\Http\Controllers\CommonController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
 use App\Models\User;
@@ -68,6 +69,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Payment Routes
     Route::get('/payment-list', [PaymentController::class, 'list']);
+
+    // Report Routes
+    Route::post('/booking-report', [ReportController::class, 'bookingReportData']);
+    Route::post('/income-report', [ReportController::class, 'incomeReportData']);
 
 
     Route::post('/logout', [AuthController::class, 'logout']);

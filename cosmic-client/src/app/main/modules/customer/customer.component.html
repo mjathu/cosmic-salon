@@ -34,7 +34,7 @@
                 
                 <mat-progress-bar mode="query" *ngIf="tableLoading"></mat-progress-bar>
                 
-                <mat-table #customertable [dataSource]="dataSource" [@animateStagger]="{value:'50'}" *ngIf="customerList.length > 0 || tableLoading">
+                <mat-table #customertable [dataSource]="dataSource" [@animateStagger]="{value:'50'}" >
     
                     <ng-container matColumnDef="name">
     

@@ -53,6 +53,7 @@
         "ngrx-store-freeze": "0.2.4",
         "ngx-color-picker": "10.1.0",
         "ngx-cookie-service": "10.1.1",
+        "ngx-papaparse": "5.0.0",
         "ngx-stripe": "12.3.1",
         "ngx-toastr": "13.2.1",
         "ngx-ui-loader": "11.0.0",
