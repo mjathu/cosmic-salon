@@ -1,12 +1,8 @@
 @component('mail::message')
 
-<p>
-    Dear {{ $user->full_name }},
-</p>
+Dear {{ $user->full_name }},
 
-<p>
-    Please click on the link below to verify your email.
-</p>
+Please click on the link below to verify your email.
 
 @component('mail::button', ['url' => $url])
 Verify

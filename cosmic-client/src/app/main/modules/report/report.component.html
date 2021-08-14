@@ -51,6 +51,35 @@
                         <app-income-report [type]="reportTypeInput"></app-income-report>
                     </ng-container>
 
+                    <ng-container *ngIf="!reportTypeInput">
+
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <div fxFlex.gt-lg="1366px" fxFlex="80%">
+    
+                                <div class="w-100-p">
+                        
+                                    <div class="p-40" fxLayout="column" fxLayoutAlign="center center">
+                                        
+                                        <div>
+                                            <mat-icon class="font-size-72 primary-fg inline">description</mat-icon>
+                                        </div>
+                            
+                                        <div>
+                                            <h2 class="h2">Please select a report type  </h2>
+                                        </div>
+                            
+                                    </div>
+                        
+                                </div>
+                        
+                            </div>
+
+                        </div>
+ 
+
+                    </ng-container>
+
                 </div>
             
             </div>

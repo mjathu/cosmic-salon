@@ -12,6 +12,8 @@ use App\Http\Resources\BookingResourceCollection;
 use App\Models\Booking;
 use App\Models\Payment;
 use App\Models\Service;
+use App\Notifications\CustomerBookingNotification;
+use App\Notifications\StaffBookingNotification;
 use Carbon\Carbon;
 use Exception;
 use Helpers;
@@ -153,6 +155,9 @@ class BookingController extends Controller
 
             DB::commit();
 
+            $booking->staff->notify(new StaffBookingNotification($booking, false));
+            $booking->customer->notify(new CustomerBookingNotification($booking, false));
+
             return response()->json(ResponseHelper::buildJsonResponse(
                 ResponseCode::CODE_200,
                 'Booking Added'
@@ -252,6 +257,9 @@ class BookingController extends Controller
 
             DB::commit();
 
+            $booking->staff->notify(new StaffBookingNotification($booking, true));
+            $booking->customer->notify(new CustomerBookingNotification($booking, true));
+
             return response()->json(ResponseHelper::buildJsonResponse(
                 ResponseCode::CODE_200,
                 'Booking Updated'
@@ -331,6 +339,13 @@ class BookingController extends Controller
             }
 
             DB::commit();
+            
+            if ($status != BookingStatus::NOSHOW) {
+
+                $booking->staff->notify(new StaffBookingNotification($booking, false));
+                $booking->customer->notify(new CustomerBookingNotification($booking, false));
+
+            }
 
             return response()->json(ResponseHelper::buildJsonResponse(
                 ResponseCode::CODE_200,
