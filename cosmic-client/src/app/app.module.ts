@@ -17,7 +17,6 @@ import { fuseConfig } from 'app/fuse-config';
 
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
-import { SampleModule } from 'app/main/sample/sample.module';
 import { AuthModule } from './main/auth/auth.module';
 import { HttpErrorInterceptor } from './shared/interceptors/http-error.interceptor';
 import { AppErrorHandler } from './shared/error/error-handler';
@@ -105,7 +104,6 @@ const appRoutes: Routes = [
 
         // App modules
         LayoutModule,
-        SampleModule,
         AuthModule
     ],
     bootstrap   : [
