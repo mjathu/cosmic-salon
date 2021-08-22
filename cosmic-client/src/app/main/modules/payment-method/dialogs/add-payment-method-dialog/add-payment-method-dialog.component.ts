@@ -27,6 +27,7 @@ export class AddPaymentMethodDialogComponent implements OnInit, OnDestroy {
     paymentMethodForm: FormGroup;
     loading: boolean;
     cardValid: boolean;
+    cardError: string;
 
     @ViewChild(StripeCardComponent) card: StripeCardComponent;
 
@@ -65,6 +66,7 @@ export class AddPaymentMethodDialogComponent implements OnInit, OnDestroy {
             locale: 'en'
         };
 
+        this.cardError = null;
         this.loading = false;
         this.cardValid = false;
         this.createForm();
@@ -93,6 +95,12 @@ export class AddPaymentMethodDialogComponent implements OnInit, OnDestroy {
     cardValChange(event: any): void {
 
         this.cardValid = event.complete;
+
+        if (event.error) {
+            this.cardError = event?.error?.message || null;
+        } else {
+            this.cardError = null;
+        }
 
     }
 

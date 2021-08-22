@@ -13,6 +13,7 @@ import { AuthService } from 'app/shared/services/auth.service';
 import { NotificationService } from 'app/shared/services/notification-service';
 import { NotificationType } from 'app/shared/enum/notification-type.enum';
 import { User } from 'app/shared/interface/user.interface';
+import { UserLevel } from 'app/shared/enum/user-level.enum';
 
 @Component({
     selector     : 'toolbar',
@@ -201,5 +202,26 @@ export class ToolbarComponent implements OnInit, OnDestroy
                 this._notificationService.displayNotification(message, NotificationType.SUCCESS, null, {timeOut: 1500});
             });
 
+    }
+
+    getLevel(): string {
+
+        const level = this._authService.currentUserValue || null;
+
+        if (level) {
+
+            if (level.role === UserLevel.ADMIN) {
+                return 'Administrator';
+            } else if (level.role === UserLevel.STAFF) {
+                return 'Staff';
+            } else if (level.role === UserLevel.CUSTOMER) {
+                return 'Customer';
+            } else {
+                return '';
+            }
+
+        } else  {
+            return '';
+        }
     }
 }

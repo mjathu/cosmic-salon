@@ -31,6 +31,16 @@ class CreateBookingsTable extends Migration
 
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('customer_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('staff_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

@@ -61,7 +61,7 @@ class Helpers
         if ($end <= AppConst::END_TIME && $startTime >= AppConst::START_TIME) {
             return $end;
         } else {
-            throw new Exception('Please select time between shop opening (8:00 AM) or closing (6:00 PM) time', ErrorType::CustomError);
+            throw new Exception('Please select time between salon opening (8:00 AM) or closing (6:00 PM) time', ErrorType::CustomError);
         }
 
     }

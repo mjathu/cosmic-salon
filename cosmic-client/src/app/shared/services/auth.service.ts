@@ -4,8 +4,10 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize, map, shareReplay, tap } from 'rxjs/operators';
 import { Const } from '../Const';
+import { NotificationType } from '../enum/notification-type.enum';
 import { ApiCommonResponse } from '../interface/http-common-response.interface';
 import { User } from '../interface/user.interface';
+import { NotificationService } from './notification-service';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +21,8 @@ export class AuthService {
 
     constructor (
         private _router: Router,
-        private _httpClient: HttpClient
+        private _httpClient: HttpClient,
+        private _notificationService: NotificationService
     ) {
 
         this._isAuthenticated = this.getCurrentUserLocalStorage() ? true : false;
@@ -54,6 +57,7 @@ export class AuthService {
         return this._httpClient.post(`${Const.apiBaseUrl}/login`, loginData)
             .pipe(
                 map((response: ApiCommonResponse) => {
+                    this._notificationService.displayNotification(response.message, NotificationType.SUCCESS);
                     return response.data || {};
                 }),
                 tap((user: User) => {

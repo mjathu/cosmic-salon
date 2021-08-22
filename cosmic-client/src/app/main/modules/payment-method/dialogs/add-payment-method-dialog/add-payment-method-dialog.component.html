@@ -43,6 +43,10 @@
 
             <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions" (change)="cardValChange($event)"></ngx-stripe-card>
 
+            <mat-error *ngIf="cardError" class="mt-12">
+                {{ cardError }}
+            </mat-error>
+
         </div>
 
         

@@ -25,6 +25,21 @@ class CreatePaymentsTable extends Migration
 
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('booking_id')
+                ->references('id')
+                ->on('bookings')
+                ->onDelete('cascade');
+
+            $table->foreign('customer_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('payment_method_id')
+                ->references('id')
+                ->on('payment_methods')
+                ->onDelete('cascade');
         });
     }
 

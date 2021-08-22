@@ -11,6 +11,9 @@
 
             <div class="toolbar-separator" *ngIf="!hiddenNavbar && !rightNavbar" fxHide.gt-md></div>
 
+            <div class="userlevel">
+                {{ getLevel() }}
+            </div>
             <!-- <div fxLayout="row" fxLayoutAlign="start center">
                 <div class="logo ml-16">
                     <img class="logo-icon" src="assets/images/logos/logo.jpg">

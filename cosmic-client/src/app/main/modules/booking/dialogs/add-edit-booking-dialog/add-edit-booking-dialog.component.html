@@ -151,7 +151,7 @@
                 class="mr-8" 
                 [matMenuTriggerFor]="menu" 
                 [disabled]="loading" 
-                *ngIf="authUser.role !== userLevelEnum.CUSTOMER">
+                *ngIf="authUser.role !== userLevelEnum.CUSTOMER && editMode">
                 Mark As
                 <mat-icon>expand_more</mat-icon>
             </button>
